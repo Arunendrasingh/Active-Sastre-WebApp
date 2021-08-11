@@ -1,0 +1,68 @@
+{% extends "base.html" %} {% load static %} {% block title %}Active Sastre-Your Cart{% endblock title %} {% block main_body %}
+<section>
+    {% if messages %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+             {% for message in messages %} {{message}} {% endfor %}.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+    <div class="header">
+        <h1>Cart List</h1>
+    </div>
+    <div class="container my-5">
+        {% if ncart == 0 %}
+            <tr>
+                <td>
+                    <h5>No items in Cart!</h5>
+                </td>
+            </tr>
+        {% else %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col" colspan="2">Product</th>
+                    <!-- <th scope="col">Design Name</th>
+                    <th scope="col">Design Price</th> -->
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                {% for cart_item in product %}
+                <tr>
+                    <td>
+                        <img src="media/{{cart_item.prods.thumbnail_image}}" height="150px" alt="">
+                    </td>
+                    <td class="cart-dtl">{{cart_item.prods.name}}</td>
+                    <!-- <td class="cart-dtl">{{cart_item.design.name}}</td> 
+                    <td class="cart-dtl">{{cart_item.design.price}}</td>  -->
+                    <td class="cart-dtl">₹{{cart_item.prods.new_price}}</td>
+                    <td class="cart-dtl"><a href="/decresequantity/{{cart_item.cartdtls.id}}" class="decrease-qntty">-</a> {{cart_item.cartdtls.prod_quantity}} <a href="/incresequantity/{{cart_item.cartdtls.id}}" class="increase-qntty">+</a></td>
+                    <td class="cart-dtl">₹{{cart_item.cartdtls.prod_amount}}</td> 
+                    <td class="cart-dtl"> <a href="/checkout/{{cart_item.prods.id}}" class="btn btn-info"> Place Order </a> </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="row cart-total">
+            <div class="col-sm-9">
+                Have you modified your Cart?Click here to <a href="#"><b> Update</b></a>
+            </div>
+            <div class="col-sm-3">
+                Subtotal ₹{{total_price}}
+            </div>
+        </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-sm-9"></div>
+            <div class="col-sm-3">
+                <!-- <a class="cart-btn" href="checkout.html">Proceed To Checkout</a> -->
+                <a class="cart-btn" href="/">Continue Shopping</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock main_body %}

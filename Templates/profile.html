@@ -1,0 +1,315 @@
+{% extends "base.html" %} {% load static %} {% block title %}Active Sastre-Profile {% endblock title %} {% block main_body %}
+<section>
+    {% if messages %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+             {% for message in messages %} {{message}} {% endfor %}.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+    <div class="header">
+        <h1> My Profile</h1>
+    </div>
+
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-sm-6 signup">
+                <h4 class="fs-2">Welcome,{{get_user.first_name}} {{get_user.last_name}}</h4>
+                <h5 class="fs-4 my-2">Your Details</h5>
+                <hr>
+                <h6 class="fs-5 mb-4">{{get_user.first_name}}  {{get_user.last_name}}</h6>
+                <h6 class="fs-5">+91 {{get_profile.phone}}</h6>
+                <h6 class="fs-5 mb-5">Email:{{get_user.email}}</h6>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#Detail">Edit Details</a>
+
+            </div>
+            <div class="col-sm-6 pro-dtls" style="z-index: 0;">
+                <h3 class="fs-2 my-4">Sizes:</h3>
+                <hr><br> {% if totalsize < 5 %} <a href="/add_size">New Size</a>{% endif %}
+                {% for size in femalesize %}
+                    <a href="view_size/{{size.id}}&&{{size.gender}}">{{size.name}}</a> 
+                {% endfor %}
+                {% for size in malesize %}
+                    <a href="view_size/{{size.id}}&&{{size.gender}}">{{size.name}}</a> 
+                {% endfor %}
+                    <h3 class="fs-2 my-4">Addresses:</h3>
+                    <hr><br> {% if totaladdress < 5 %} <a href="#" data-bs-toggle="modal" data-bs-target="#add-2">
+                        New Address
+                        </a>{% endif %} {% for address in address %}
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#add-{{address.id}}">{{address.name}}</a> {% endfor %}
+                        <!-- <a href="#" data-bs-toggle="modal" data-bs-target="#add-3">Delhi</a> -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals Start -->
+
+    <!-- User Details -->
+    <div class="modal pro-dtls fade" id="Detail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="DetailLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="DetailLabel">Details</h5>
+                    <button type="submit" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="change_profile/{{get_user.id}}" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <label for="FName">First Name</label>
+                        <input class="form-control my-2" type="text" name="fname" id="FName" value="{{get_user.first_name}}">
+                        <label for="LName">Last Name</label>
+                        <input class="form-control my-2" type="text" name="lname" id="LName" value="{{get_user.last_name}}">
+                        <label for="Email">Email</label>
+                        <input class="form-control my-2" type="email" name="email" id="Email" value="{{get_user.email}}">
+                        <label for="Tel">Mobile Number</label>
+                        <input class="form-control my-2" type="tel" name="mobile" id="Tel" value="{{get_profile.phone}}">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save
+                            Changes</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Size-1 -->
+    <div class="modal pro-dtls fade" id="size-1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="size-1Label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="size-1Label">Size (In CM)</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="row">
+                            <h5>Name:</h5>
+                            <input class="form-control my-2" type="text" name="shirt_name">
+                            <h5>Paint Size:</h5>
+                            <div class="col-sm-6">
+                                <label for="Length"><small>Length</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="p_Length" id="Length" value="10">
+                                <label for="Hips"><small>Hips</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="p_Hips" id="Hips" value="10">
+                                <label for="Knee"><small>Knee</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="p_Knee" id="Knee" value="10">
+                                <label for="Crotch/Rise"><small>Crotch/Rise</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="p_Crotch" id="Crotch/Rise" value="10">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="Waist"><small>Waist</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="p_Waist" id="Waist" value="10">
+                                <label for="Thigh"><small>Thigh</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="p_Thigh" id="Thigh" value="10">
+                                <label for="LegOpening"><small>Leg Opening</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="p_LegOpening" id="LegOpening" value="10">
+                                <label for="In-Seam"><small>In-Seam</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="p_Seam" id="In-Seam" value="10">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <h5>Shirt Size:</h5>
+                            <div class="col-sm-6">
+                                <label for="ShirtLen"><small>Shirt Length</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="s_ShirtLen" id="ShirtLen" value="10">
+                                <label for="Shoulders"><small>Shoulders</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="s_Shoulders" id="Shoulders" value="10">
+                                <label for="Overarm"><small>Overarm</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="s_Overarm" id="Overarm" value="10">
+                                <label for="Bicep"><small>Bicep(Loose)</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="s_Bicep" id="Bicep" value="10">
+                                <label for="Stomach"><small>Front: Stomach</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="s_Stomach" id="Stomach" value="10">
+                                <label for="Wrist"><small>Wrist</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="s_Wrist" id="Wrist" value="10">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="Sleeve"><small>Sleeve Length</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="s_Sleeve" id="Sleeve" value="10">
+                                <label for="Chest"><small>Chest</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="s_Chest" id="Chest" value="10">
+                                <label for="Waistcoat"><small>Waistcoat Length</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="Waistcoat" id="Waistcoat" value="10">
+                                <label for="FrontChest"><small>Front: Chest</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="s_FrontChest" id="FrontChest" value="10">
+                                <label for="Hips"><small>Front: Hips</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="s_Hips" id="Hips" value="10">
+                                <label for="Neck"><small>Neck</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="s_Neck" id="Neck" value="10">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save
+                            Changes</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Size-2 -->
+    {% for size in size %}
+    <div class="modal pro-dtls fade" id="size-{{size.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="size-2Label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="size-2Label">Size (In CM)</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="change_size/{{size.id}}" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="row">
+                            <h5>Name:</h5>
+                            <input class="form-control my-2" type="text" value="{{size.name}}" name="shirt_name">
+                            <h5>Paint Size:</h5>
+                            <div class="col-sm-6">
+                                <label for="Length"><small>Length</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="p_Length" id="Length" value="10">
+                                <label for="Hips"><small>Hips</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="p_Hips" id="Hips" value="10">
+                                <label for="Knee"><small>Knee</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="p_Knee" id="Knee" value="10">
+                                <label for="Crotch/Rise"><small>Crotch/Rise</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="p_Crotch" id="Crotch/Rise" value="10">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="Waist"><small>Waist</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="p_Waist" id="Waist" value="10">
+                                <label for="Thigh"><small>Thigh</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="p_Thigh" id="Thigh" value="10">
+                                <label for="LegOpening"><small>Leg Opening</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="p_LegOpening" id="LegOpening" value="10">
+                                <label for="In-Seam"><small>In-Seam</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="p_Seam" id="In-Seam" value="10">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <h5>Shirt Size:</h5>
+                            <div class="col-sm-6">
+                                <label for="ShirtLen"><small>Shirt Length</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="s_ShirtLen" id="ShirtLen" value="10">
+                                <label for="Shoulders"><small>Shoulders</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="s_Shoulders" id="Shoulders" value="10">
+                                <label for="Overarm"><small>Overarm</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="s_Overarm" id="Overarm" value="10">
+                                <label for="Bicep"><small>Bicep(Loose)</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="s_Bicep" id="Bicep" value="10">
+                                <label for="Stomach"><small>Front: Stomach</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="s_Stomach" id="Stomach" value="10">
+                                <label for="Wrist"><small>Wrist</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="s_Wrist" id="Wrist" value="10">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="Sleeve"><small>Sleeve Length</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="s_Sleeve" id="Sleeve" value="10">
+                                <label for="Chest"><small>Chest</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="s_Chest" id="Chest" value="10">
+                                <label for="Waistcoat"><small>Waistcoat Length</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="Waistcoat" id="Waistcoat" value="10">
+                                <label for="FrontChest"><small>Front: Chest</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="s_FrontChest" id="FrontChest" value="10">
+                                <label for="Hips"><small>Front: Hips</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="s_Hips" id="Hips" value="10">
+                                <label for="Neck"><small>Neck</small></label>
+                                <input class="form-control my-2" type="number" min="0" step="any" name="s_Neck" id="Neck" value="10">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="col-6">
+                            <a href="delete_size/{{size.id}}" class="btn btn-danger" style="border: none;">Delete</a>
+                        </div>
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save
+                            Changes</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- Address-1 -->
+    {% for address in address %}
+    <div class="modal fade pro-dtls" id="add-{{address.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="add-1Label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="add-1Label">Address</h5>
+                    <button type="submit" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="change_address/{{address.id}}" , method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <label for="Name">Name</label>
+                        <input class="form-control my-2" type="text" name="addname" id="Name" value="{{address.name}}">
+                        <label for="Tel">Mobile Number</label>
+                        <input class="form-control my-2" type="tel" name="mobile" id="Tel" value="{{address.contact_no}}">
+                        <label for="pin">Pin Code</label>
+                        <input class="form-control my-2" type="number" min="0" step="any" name="pin" id="pin" value="{{address.pin_code}}">
+                        <label for="State">State</label>
+                        <input class="form-control my-2" type="text" name="state" id="State" value="{{address.state}}">
+                        <label for="City">City</label>
+                        <input class="form-control my-2" type="text" name="city" id="City" value="{{address.city}}">
+                        <label for="house">House No., Building Name</label>
+                        <input class="form-control my-2" type="text" name="house_no" id="house" value="{{address.house_no}}">
+                        <label for="Area">Area, Landmark</label>
+                        <input class="form-control my-2" type="text" name="area" id="Area" value="{{address.area_landmark}}">
+                    </div>
+                    <div class="modal-footer">
+                        <div class="col-6">
+                            <a href="delete_address/{{address.id}}" class="btn btn-danger" style="border: none;">Delete</a>
+                        </div>
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save
+                            Changes</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <!-- Address-2 -->
+    <div class="modal fade pro-dtls" id="add-2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="add-2Label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="add-2Label">Address</h5>
+                    <button type="submit" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="saveaddress" , method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <label for="Name">Name</label>
+                        <input class="form-control my-2" type="text" name="addname" id="Name">
+                        <label for="Tel">Mobile Number</label>
+                        <input class="form-control my-2" type="number" name="mobile" id="Tel">
+                        <label for="pin">Pin Code</label>
+                        <input class="form-control my-2" type="number" min="0" step="any" name="pin" id="pin">
+                        <label for="State">State</label>
+                        <input class="form-control my-2" type="text" name="state" id="State">
+                        <label for="City">City</label>
+                        <input class="form-control my-2" type="text" name="city" id="City">
+                        <label for="house">House No., Building Name</label>
+                        <input class="form-control my-2" type="text" name="house_no" id="house">
+                        <label for="Area">Area, Landmark</label>
+                        <input class="form-control my-2" type="text" name="area" id="Area">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save Changes
+                        </button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modals End -->
+
+</section>
+{% endblock main_body %}

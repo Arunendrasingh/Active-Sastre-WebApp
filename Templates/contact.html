@@ -1,0 +1,50 @@
+{% extends "base.html" %} {% load static %} {% block title %}Active Sastre-Contact Us {% endblock title %} {% block active2 %} active {% endblock active2 %} {% block main_body %}
+<section>
+    {% if messages %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+             {% for message in messages %} {{message}} {% endfor %}.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+    <div class="header">
+        <h1>Contact Us</h1>
+    </div>
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-sm-6 login">
+                <h3 class="fs-2">Leave a message </h3>
+                <form action="#" method="get">
+                    <input type="text" placeholder="Name">
+                    <input type="email" placeholder="Email">
+                    <input type="text" placeholder="Subject">
+                    <input type="text" placeholder="Message">
+                    <input type="submit" value="Send">
+                </form>
+            </div>
+            <div class="col-sm-6 register">
+                <h3 class="fs-2">Contact Information</h3>
+                <hr>
+                <h5 class="fs-3">Location-1</h5>
+                <p>
+                    111-303 Fusce nec ante at odio blandit, In vitae lacus in purus interdum, 10640 Nam rhoncus, diam a mollis tempor
+                    <br><br>
+                    <span class="fs-5">Phone:</span> 010-225-1800
+                    <br><br>
+                    <span class="fs-5">Email:</span> info@company.com
+                </p><br>
+                <h5 class="fs-3">Location-2</h5>
+                <p>
+                    120-300 Duis lacinia dictum, Ullamcorper mattis magna non, 15520 Maecenas a diam, a mollis magna
+                    <br><br>
+                    <span class="fs-5">Phone:</span> 010-226-1200
+                    <br><br>
+                    <span class="fs-5">Email:</span> contact@company.com
+                </p><br>
+
+            </div>
+            </div ">
+            <iframe class="my-3 " width="100% " height="400 " frameborder="0 " scrolling="no " marginheight="0 " marginwidth="0 " src="http://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=new+york+central+park&amp;aq=&amp;sll=37.0625,-95.677068&amp;sspn=60.158465,135.263672&amp;vpsrc=6&amp;ie=UTF8&amp;hq=&amp;hnear=Central+Park,+New+York&amp;t=m&amp;ll=40.769606,-73.973372&amp;spn=0.014284,0.033023&amp;z=14&amp;output=embed "></iframe>
+
+        </div>
+    </section>
+    {% endblock main_body %}

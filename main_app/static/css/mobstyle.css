@@ -1,0 +1,19 @@
+@media screen and (max-width: 992px) {
+    .navbar form{
+        /* position: absolute; */
+        max-width: 100%;
+    }
+    .navbar input{
+        width: 80%;
+    }
+    .abta a{
+        display: block;
+    }
+table{
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    overflow: scroll;
+    overflow: auto;
+}
+}

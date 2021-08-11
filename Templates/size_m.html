@@ -1,0 +1,1541 @@
+{% extends "base.html" %} {% load static %} {% block title %}Active Sastre-Contact Us {% endblock title %} {% block active2 %} active {% endblock active2 %} {% block main_body %}
+<section>
+    <div class="header">
+        <h1>Edit Size </h1>
+    </div>
+    <div class="container my-5">
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                {% if sizechart %}
+                <!-- dynamic table -->
+                <button class="nav-link" id="nav-{{sizechart.gender}}-{{sizechart.id}}-tab" data-bs-toggle="tab" data-bs-target="#nav-{{sizechart.gender}}-{{sizechart.id}}" type="button" role="tab" aria-controls="nav-{{sizechart.gender}}-{{sizechart.id}}" aria-selected="true">{{sizechart.name}}</button>
+                {% else %}
+                <!-- static table -->
+                <button class="nav-link active" id="nav-Female-tab" data-bs-toggle="tab" data-bs-target="#nav-Female" type="button" role="tab" aria-controls="nav-Female" aria-selected="true">Female</button>
+                <button class="nav-link" id="nav-male-tab" data-bs-toggle="tab" data-bs-target="#nav-male" type="button" role="tab" aria-controls="nav-male" aria-selected="false">Male</button>
+                {% endif %}
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            {% if sizechart %}
+            <div class="tab-pane fade" id="nav-male-{{sizechart.id}}" role="tabpanel" aria-labelledby="nav-male-{{sizechart.id}}-tab"> 
+                <div class="row">
+                    <div class="col-sm-8 register mx-auto">
+                        <h4 class="fs-2">Size</h4>
+                        <hr>
+                        <h6 class="fs-5 my-3">Please provide all required measures currectly in "CM"</h6>
+                        <form action="/update_size{{sizechart.id}}/{{sizechart.gender}}" method="POST">
+                            {% csrf_token %}
+                            <h6 class="fs-5">Name:</h6>
+                            <input type="text" id="name" placeholder="Your name" name="name" value="{{sizechart.name}}" required>
+                            <!-- <h6 class="fs-5">Design Type:</h6> -->
+                            <!-- <input type="text" id="name" name="design_type" placeholder="Like- Blouse, kurti etc" required> -->
+                            <input type="hidden" id="name" name="femail" value="male" required>
+                            <!-- <h6 class="fs-5"> Size:</h6> -->
+                            <div class="row">
+                                <h5>Paint Size:</h5>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/in_seam.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="Length">Length</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" value="{{sizechart.p_length}}" step="any" name="p_Length" id="Length">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/men_waist.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Waist</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" value="{{sizechart.p_Waist}}" step="any" name="p_Waist" id="waist">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/men_hips.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="hips">Hips</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" value="{{sizechart.p_Hips}}" step="any" name="p_Hips" id="hips">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/menthigh.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="thigh">Thigh</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" value="{{sizechart.p_Thigh}}" step="any" name="p_Thigh" id="thigh">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <img src="{% static 'img/menknee.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                                </div>
+                                                <div class="col-4 py-2">
+                                                    <label for="knee">Knee</label>
+                                                </div>
+                                                <div class="col-5">
+                                                    <input style="margin: 0 !important;" type="number" min="0" value="{{sizechart.p_Knee}}" step="any" name="p_Knee" id="knee">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/leg_opening.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="leg">Leg Opening</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" value="{{sizechart.p_Leg_Opening}}" step="any" name="p_LegOpening" id="leg">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/crotch_rise.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="crotch">Crotch/Rise</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" value="{{sizechart.p_Crotch_Or_Rise}}" min="0" step="any" name="p_Crotch" id="crotch">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/in_seam.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="In-Seam">In-Seam</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" value="{{sizechart.p_In_Seam}}" step="any" name="p_Seam" id="p_Seam">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h5>Shirt Size:</h5>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/shirt_length.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="In-Seam">Shirt Length</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" value="{{sizechart.s_Shirt_lenght}}" min="0" step="any" name="s_ShirtLen" id="shirtlength">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/men_shoulders.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="In-Seam">Shoulders</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" value="{{sizechart.s_Sleeve_Length}}" min="0" step="any" name="s_Shoulders" id="s_Shoulders">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/men_overarm.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="In-Seam">Overarm</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" value="{{sizechart.s_Overarm}}" min="0" step="any" name="s_Overarm" id="s_Overarm">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/mwn_bicep.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="Bicep(Loose)">Bicep(Loose)</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" value="{{sizechart.s_Bicep_Loose}}" step="any" name="s_Bicep" id="s_Bicep">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/front_stomack.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="In-Seam">Front: Stomach</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" value="{{sizechart.s_Front_Stomach}}" min="0" step="any" name="s_Stomach" id="s_Stomach">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/wrist.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="In-Seam">Wrist</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" value="{{sizechart.s_Wrist}}" min="0" step="any" name="s_Wrist" id="s_Wrist">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/men_sleeve_length.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="In-Seam">Sleeve Length</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" value="{{sizechart.s_Sleeve_Length}}" min="0" step="any" name="s_Sleeve" id="s_Sleeve">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/chest.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="In-Seam">Chest</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="s_Chest" id="s_Chest" value="{{sizechart.s_Chest}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/waistcoat_length.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="In-Seam">Waistcoat Length</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="Waistcoat" id="Waistcoat" value="{{sizechart.s_Waistcoat_Length}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/chest.jpeg' %}" class="rounded-circle" width="100%" alt="" >
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="In-Seam">Front: Chest</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="s_FrontChest" id="s_FrontChest" value="{{sizechart.s_Front_Chest}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/men_hips.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="In-Seam">Front: Hips</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="s_Hips" id="s_Hips" value="{{sizechart.s_Front_Hips}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/men_neck.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="In-Seam">Neck</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="s_Neck" id="s_Neck" value="{{sizechart.s_Neck}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <a href="/delete_size/{{sizechart.id}}/{{sizechart.gender}}" class="btn btn-danger" style="border: none;">Delete</a>
+                            </div>
+                            <div class="row">
+                                <input type="submit" value="Save Details">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- size changes for female -->
+            <div class="tab-pane fade" id="nav-female-{{sizechart.id}}" role="tabpanel" aria-labelledby="nav-female-{{sizechart.id}}-tab">
+                <div class="row">
+                    <div class="col-sm-8 register mx-auto">
+                        <h4 class="fs-2">Size</h4>
+                        <hr>
+                        <h6 class="fs-5 my-3">Please provide all required measures currectly in "CM"</h6>
+                        <form action="/update_size{{sizechart.id}}/{{sizechart.gender}}" method="POST">
+                            {% csrf_token %}
+                            <h6 class="fs-5">Name:</h6>
+                            <input type="text" id="name" name="name" placeholder="Your name" value="{{sizechart.name}}" required>
+                            <!-- <h6 class="fs-5">Design Type:</h6>
+                            <input type="text" id="name" name="design_type" placeholder="Like- Blouse, kurti etc" required> -->
+                            <!-- <input type="hidden" id="name" name="femail" value="female" required> -->
+                            <h6 class="fs-5"> Size:</h6>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/shoulder.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="Length">Shoulder</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="shoulder" value="{{sizechart.shoulder}}" id="shoulder">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/shoulder_full_length.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Shoulder Full Lenght</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="shoulder_full_lenght" value="{{sizechart.shoulder_full_lenght}}" id="shoulder_full_lenght">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/front_neck_depth.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Front Neck Depth</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="front_neck_depth" id="front_neck_depth" value="{{sizechart.front_neck_depth}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/chest_around.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Chest Around</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="chest" id="chest" value="{{sizechart.chest}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/waist.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Waist</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="waist" id="waist" value="{{sizechart.waist}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/back_neck_depth.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Back Neck Depth</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="back_neck_depth" id="back_neck_depth" value="{{sizechart.back_neck_depth}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/blouse_length.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Blouse Length</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="blouse_length" id="blouse_length" value="{{sizechart.blouse_length}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/sleeve_length1.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Sleeve Length</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="sleeve_length" id="sleeve_length" value="{{sizechart.sleeve_length}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/sleeve_round.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Sleeve Around</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="sleeve_around" id="sleeve_around" value="{{sizechart.sleev_around}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/arm_hole.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Armhole(around)</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="arm_hole" id="arm_hole" value="{{sizechart.arm_hole}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/dress_length.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Dress Length</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="dress_length" id="dress_length" value="{{sizechart.dress_length}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/neckline.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Neck Line</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="neck_line" id="neck_line" value="{{sizechart.neck_line}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/upper_bust.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Upper Bust</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="upper_bust" id="upper_bust" value="{{sizechart.upper_bust}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/chest.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Chest/Bust</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="chest_bust" id="chest_bust" value="{{sizechart.chest_bust}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/stomach.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Stomach</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="stomach" id="stomach" value="{{sizechart.stomach}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/hip.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Hip</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="hips" id="hips" value="{{sizechart.hips}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/thigh.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="thigh">Thigh</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="thigh" id="thigh" value="{{sizechart.thigh}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/knee.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="knee">Knee</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="knee" id="knee" value="{{sizechart.knee}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/calf.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="calf">Calf</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="calf" id="calf" value="{{sizechart.calf}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/ankel_hem.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="ankel_hem">Ankel Hem</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="ankel_hem" id="ankel_hem" value="{{sizechart.ankel_hem}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/upper_chest.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Upper Chest</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="upper_Chest" id="upper_chest" value="{{sizechart.upper_chest}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/neck_to_shoulder.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="neck_to_solider">Neck to Solider</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="neck_to_solider" id="neck_to_solider" value="{{sizechart.neck_to_solider}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/gown_length.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="gown_length">Gown Length</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="gown_length" id="gown_length" value="{{sizechart.gown_length}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/gown_length.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="leg">Around Bust</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="around_bust" id="around_bust" value="{{sizechart.around_bust}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/upper_waist.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="crotch">upper_waist</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="upper_waist" id="upper_waist" value="{{sizechart.upper_waist}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/waist_to_ankel_lenght.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="crotch">Waist to Ankel Length</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="waist_to_ankel_length" id="waist_to_ankel_length" value="{{sizechart.waist_to_ankel_length}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/full_body_height.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="full_body_lenght">Full Body Lenght</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="full_body_lenght" id="full_body_lenght" value="{{sizechart.full_body_lenght}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <a href="/delete_size/{{sizechart.id}}/{{sizechart.gender}}" class="btn btn-danger" style="border: none;">Delete</a>
+                                </div>
+                                <div class="row">
+                                    <input type="submit" value="Save Details">
+                                </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- end for femail size editing -->
+            {% else %}
+            <div class="tab-pane fade" id="nav-male" role="tabpanel" aria-labelledby="nav-male-tab"> 
+                <div class="row">
+                    <div class="col-sm-8 register mx-auto">
+                        <h4 class="fs-2">Size</h4>
+                        <hr>
+                        <h6 class="fs-5 my-3">Please provide all required measures currectly in "CM"</h6>
+                        <form action="addsize" method="POST">
+                            {% csrf_token %}
+                            <h6 class="fs-5">Name:</h6>
+                            <input type="text" id="name" placeholder="Your name" name="name" required>
+                            <!-- <h6 class="fs-5">Design Type:</h6> -->
+                            <!-- <input type="text" id="name" name="design_type" placeholder="Like- Blouse, kurti etc" required> -->
+                            <input type="hidden" id="name" name="femail" value="male" required>
+                            <!-- <h6 class="fs-5"> Size:</h6> -->
+                            <div class="row">
+                                <h5>Paint Size:</h5>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/in_seam.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="Length">Length</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="p_Length" id="Length">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/men_waist.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Waist</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="p_Waist" id="waist">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/men_hips.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="hips">Hips</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="p_Hips" id="hips">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/menthigh.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="thigh">Thigh</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="p_Thigh" id="thigh">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <img src="{% static 'img/menknee.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                                </div>
+                                                <div class="col-4 py-2">
+                                                    <label for="knee">Knee</label>
+                                                </div>
+                                                <div class="col-5">
+                                                    <input style="margin: 0 !important;" type="number" min="0" step="any" name="p_Knee" id="knee">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/leg_opening.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="leg">Leg Opening</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="p_LegOpening" id="leg">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/crotch_rise.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="crotch">Crotch/Rise</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="p_Crotch" id="crotch">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/in_seam.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="In-Seam">In-Seam</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="p_Seam" id="p_Seam">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h5>Shirt Size:</h5>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/shirt_length.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="In-Seam">Shirt Length</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="s_ShirtLen" id="shirtlength">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/men_shoulders.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="In-Seam">Shoulders</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="s_Shoulders" id="s_Shoulders">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/men_overarm.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="In-Seam">Overarm</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="s_Overarm" id="s_Overarm">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/mwn_bicep.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="Bicep(Loose)">Bicep(Loose)</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="s_Bicep" id="s_Bicep">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/front_stomack.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="In-Seam">Front: Stomach</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="s_Stomach" id="s_Stomach">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/wrist.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="In-Seam">Wrist</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="s_Wrist" id="s_Wrist">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/men_sleeve_length.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="In-Seam">Sleeve Length</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="s_Sleeve" id="s_Sleeve">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/chest.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="In-Seam">Chest</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="s_Chest" id="s_Chest">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/waistcoat_length.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="In-Seam">Waistcoat Length</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="Waistcoat" id="Waistcoat">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/chest.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="In-Seam">Front: Chest</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="s_FrontChest" id="s_FrontChest">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/men_hips.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="In-Seam">Front: Hips</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="s_Hips" id="s_Hips">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/men_neck.jpeg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="In-Seam">Neck</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="s_Neck" id="s_Neck">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <input type="submit" value="Save Details">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade show active" id="nav-Female" role="tabpanel" aria-labelledby="nav-Female-tab">
+                <div class="row">
+                    <div class="col-sm-8 register mx-auto">
+                        <h4 class="fs-2">Size</h4>
+                        <hr>
+                        <h6 class="fs-5 my-3">Please provide all required measures currectly in "CM"</h6>
+                        <form action="addsize" method="POST">
+                            {% csrf_token %}
+                            <h6 class="fs-5">Name:</h6>
+                            <input type="text" id="name" name="name" placeholder="Your name" required>
+                            <!-- <h6 class="fs-5">Design Type:</h6>
+                            <input type="text" id="name" name="design_type" placeholder="Like- Blouse, kurti etc" required> -->
+                            <input type="hidden" id="name" name="femail" value="female" required>
+                            <h6 class="fs-5"> Size:</h6>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/shoulder.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="Length">Shoulder</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="shoulder" id="shoulder">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/shoulder_full_length.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Shoulder Full Lenght</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="shoulder_full_lenght" id="shoulder_full_lenght">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/front_neck_depth.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Front Neck Depth</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="front_neck_depth" id="front_neck_depth">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/chest_around.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Chest Around</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="chest" id="chest">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/waist.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Waist</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="waist" id="waist">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/back_neck_depth.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Back Neck Depth</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="back_neck_depth" id="back_neck_depth">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/blouse_length.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Blouse Length</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="blouse_length" id="blouse_length">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/sleeve_length1.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Sleeve Length</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="sleeve_length" id="sleeve_length">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/sleeve_round.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Sleeve Around</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="sleeve_around" id="sleeve_around">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/arm_hole.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Armhole(around)</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="arm_hole" id="arm_hole">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/dress_length.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Dress Length</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="dress_length" id="dress_length">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/neckline.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Neck Line</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="neck_line" id="neck_line">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/upper_bust.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Upper Bust</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="upper_bust" id="upper_bust">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/chest.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Chest/Bust</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="chest_bust" id="chest_bust">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/stomach.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Stomach</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="stomach" id="stomach">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/hip.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Hip</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="hips" id="hips">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/thigh.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="thigh">Thigh</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="thigh" id="thigh">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/knee.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="knee">Knee</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="knee" id="knee">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/calf.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="calf">Calf</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="calf" id="calf">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/ankel_hem.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="ankel_hem">Ankel Hem</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="ankel_hem" id="ankel_hem">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/upper_chest.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="waist">Upper Chest</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="upper_Chest" id="upper_chest">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/neck_to_shoulder.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="neck_to_solider">Neck to Solider</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="neck_to_solider" id="neck_to_solider">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/gown_length.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="gown_length">Gown Length</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="gown_length" id="gown_length">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/gown_length.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="leg">Around Bust</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="around_bust" id="around_bust">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/upper_waist.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="crotch">upper_waist</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="upper_waist" id="upper_waist">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/waist_to_ankel_lenght.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="crotch">Waist to Ankel Length</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="waist_to_ankel_length" id="waist_to_ankel_length">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{% static 'img/full_body_height.jpg' %}" class="rounded-circle" width="100%" alt="">
+                                            </div>
+                                            <div class="col-4 py-2">
+                                                <label for="full_body_lenght">Full Body Lenght</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <input style="margin: 0 !important;" type="number" min="0" step="any" name="full_body_lenght" id="full_body_lenght">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <input type="submit" value="Save Details">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock main_body %}

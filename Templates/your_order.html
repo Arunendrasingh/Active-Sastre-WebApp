@@ -1,0 +1,134 @@
+{% extends "base.html" %} {% load static %} {% block title %}Active Sastre-Wishlist {% endblock title %} {% block main_body %}
+<section>
+    <div class="container my-5 pb-2 bg-light">
+        <h4 class="fs-1" style="color: teal; padding: 20px 0 0 10px;">My Orders</h4>
+        <hr>
+        {% for product in order_obj %}
+        <div class="card mb-3" style="max-width: 100%;">
+            <div class="row g-0">
+                <div class="col-md-3">
+                    <a href="product/{{product.prod_detail.id}}">
+                        <img src="/media/{{product.prod_detail.thumbnail_image}}" class="img-fluid rounded-start" alt="product">
+                    </a>
+                </div>
+                <div class="col-md-9">
+                    <div class="card-body">
+                        <h5 class="card-title mb-2">{{product.order_obj1.pro_name}}</h5>
+                        <p class="card-text">
+                            <small>Quantity:{{product.order_obj1.Product_quantity}} </small><br>
+                            <b>₹{{product.order_obj1.total_price}}</b>
+                        </p>
+                        <h6 class="card-text text-success">{{product.order_obj1.order_status}}</h6>
+                        <h5 class="card-text">
+                        </h5>
+                        <hr>
+                        {% ifequal product.order_obj1.status True %}
+                        {% if product.order_obj1.review == False %}
+                        <div class="card-text rate-stars text-center">
+                            <form action="rate_product/{{product.prod_detail.id}}/{{product.order_obj1.id}}" method="POST">
+                                {% csrf_token %}
+                                <div class="m-5">
+                                    <div class="rate">
+                                        <a href="#1star">Product Quality: </a>
+                                        <input type="radio" id="star5" required name="product_quality" value="5" />
+                                        <label for="star5" title="text">5 stars</label>
+                                        <input type="radio" id="star4" required name="product_quality" value="4" />
+                                        <label for="star4" title="text">4 stars</label>
+                                        <input type="radio" id="star3" required name="product_quality" value="3" />
+                                        <label for="star3" title="text">3 stars</label>
+                                        <input type="radio" id="star2" required name="product_quality" value="2" />
+                                        <label for="star2" title="text">2 stars</label>
+                                        <input type="radio" id="star1" required name="product_quality" value="1" />
+                                        <label for="star1" title="text">1 star</label>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="m-5">
+                                    <div class="rate">
+                                        <a href="#1star">Stitching Quality: </a>
+                                        <input type="radio" id="star52" required name="stiching_quality" value="5" />
+                                        <label for="star52" title="text">5 stars</label>
+                                        <input type="radio" id="star42" required name="stiching_quality" value="4" />
+                                        <label for="star42" title="text">4 stars</label>
+                                        <input type="radio" id="star32"required name="stiching_quality" value="3" />
+                                        <label for="star32" title="text">3 stars</label>
+                                        <input type="radio" id="star22" required name="stiching_quality" value="2" />
+                                        <label for="star22" title="text">2 stars</label>
+                                        <input type="radio" id="star12" required name="stiching_quality" value="1" />
+                                        <label for="star12" title="text">1 star</label>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="m-5">
+                                    <div class="rate">
+                                        <a href="#1star">Fitting: </a>
+                                        <input type="radio" id="star53" name="fitting" required value="5" />
+                                        <label for="star53" title="text">5 stars</label>
+                                        <input type="radio" id="star43" name="fitting" required value="4" />
+                                        <label for="star43" title="text">4 stars</label>
+                                        <input type="radio" id="star33" name="fitting"required value="3" />
+                                        <label for="star33" title="text">3 stars</label>
+                                        <input type="radio" id="star23" name="fitting" required value="2" />
+                                        <label for="star23" title="text">2 stars</label>
+                                        <input type="radio" id="star13" name="fitting" required value="1" />
+                                        <label for="star13" title="text">1 star</label>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="m-5">
+                                    <div class="rate">
+                                        <a href="#1star">How much you liked Product: </a>
+                                        <input type="radio" id="star54" required name="like_product" value="5" />
+                                        <label for="star54" title="text">5 stars</label>
+                                        <input type="radio" id="star44" name="like_product" required value="4" />
+                                        <label for="star44" title="text">4 stars</label>
+                                        <input type="radio" id="star34" name="like_product" required value="3" />
+                                        <label for="star34" title="text">3 stars</label>
+                                        <input type="radio" id="star24" name="like_product" required value="2" />
+                                        <label for="star24" title="text">2 stars</label>
+                                        <input type="radio" id="star14" name="like_product" required value="1" />
+                                        <label for="star14" title="text">1 star</label>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="m-4">
+                                    <input type="text" required class="rounded-pill px-3 py-1" name="review" placeholder="Few words about Us">
+                                    <input type="submit" class="btn btn-primary rounded-pill px-3 py-1" value="Post">
+                                </div>
+                            </form>
+                        </div>
+                        {% else %}
+                        <div class="container">
+                            <div class="card">
+                                <div class="card-header">
+                                    Rating
+                                </div>
+                                {% for rating in rateing_obj %}
+                                {% if rating.product_id == product.order_obj1.Product_Id and rating.order_id == product.order_obj1.id %}
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">Product Quality:-{{rating.product_quality}}  ⭐</li>
+                                        <li class="list-group-item">Stitching Quality:-  {{rating.stiching_quality}}⭐</li>
+                                        <li class="list-group-item">Fitting:- {{rating.fitting_quality}}⭐</li>
+                                        <li class="list-group-item">How much you liked Product:- {{rating.liked}}⭐</li>
+                                    </ul>
+                                    <hr>
+                                <h5 class="card-title" style="color:green;">About Product:-</h5>
+                                <p class="card-text">{{rating.message}}</p>
+                                <a href="delete/{{rating.id}}/{{rating.order_id}}" class="btn btn-danger">Remove Review</a>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endifequal %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</section>
+{% endblock main_body %}

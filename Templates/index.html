@@ -1,0 +1,160 @@
+{% extends "base.html" %} {% load static %} {% block title %}Active Sastre-Home {% endblock title %} {% block active %} active {% endblock active %} {% block main_body %}
+<section>
+    <!-- Slide Show Start -->
+    <div id="carouselExampleControls" class="carousel slide p-3" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{% static 'img/active_sastre_1.png' %}" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'img/24_hourse.jpeg' %}" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item ">
+                <img src="{% static 'img/SASTRE_4.jpeg' %}" class="d-block w-100" alt="...">
+            </div>
+            
+            <!--<div class="carousel-item">
+                <img src="{% static 'img/slide-3.jpg' %}" class="d-block w-100" alt="...">
+            </div> -->
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <!-- Slide Show End -->
+
+    <!-- Offers Start -->
+    <!-- <div class="row mx-3 my-5">
+        <div class="col-sm-4">
+            <div class="card mb-3" style="max-width: 540px; border: none;">
+                <a href="#">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="{% static 'img/logo.jpg' %}" width="100%" class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title"><b>Offer-1</b></h5>
+                                <p class="card-text">This is a wider card with supporting text below.</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card mb-3" style="max-width: 540px; border: none;">
+                <a href="#">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="{% static 'img/logo.jpg' %}" width="100%" class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title"><b>Offer-2</b></h5>
+                                <p class="card-text">This is a wider card with supporting text below.</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card mb-3" style="max-width: 540px; border: none;">
+                <a href="#">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="{% static 'img/logo.jpg' %}" width="100%" class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title"><b>Offer-3</b></h5>
+                                <p class="card-text">This is a wider card with supporting text below.</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div> -->
+    <!-- Offers End -->
+    <!-- Sale Start -->
+    <div class="row m-3 mb-5 text-center">
+        <h2 class="fs-1"><b>Best Offers of the Sale</b></h2>
+    </div>
+    <div class="row m-3">
+        <div class="col-sm-4 my-2">
+            <div class="card" style="border: none; overflow: hidden;">
+                <a href="#">
+                    <img src="{% static 'img/off-1.jpg' %}" class="card-img" height="100%" alt="offer">
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-4 my-2">
+            <div class="card" style="border: none; overflow: hidden;">
+                <a href="#">
+                    <img src="{% static 'img/off-1.jpg' %}" class="card-img" height="100%" alt="offer">
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-4 my-2">
+            <div class="card" style="border: none; overflow: hidden;">
+                <a href="#">
+                    <img src="{% static 'img/off-1.jpg' %}" class="card-img" height="100%" alt="offer">
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- Sale End -->
+    <!-- Best Daels Start -->
+    <div class="row m-3 mt-5 text-center">
+        <h2 class="fs-1"><b>Best Deals</b></h2>
+    </div>
+    <div class="row row-cols-1 row-cols-md-4 g-4 m-3">
+        <!-- Adding Jinja Template -->
+        {% for product in product|slice:20 %}
+        {% if product.total_num != 0 %}
+        <div class="col">
+            <a href="product/{{product.id}}">
+                <div class="card h-100">
+                    <img src="media/{{product.thumbnail_image}}" class="card-img-top" style="height: 300px;" alt="product">
+                    <div class="card-body">
+                        <h4 class="card-title"><b>{{product.name}}</b></h4>
+                        <p class="card-text" style="color: gray;">{{product.design_pattern}}</p>
+                        <h5 class="card-title"><s style="color: darkgray;">₹{{product.price}}&nbsp;</s>₹{{product.new_price}}<P class="card-text" style="color:green ;"><small>up to {{product.discount}}% off</small></P></h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    <div class="row m-3 text-center">
+        <a href="all_product"><b class=" btn fs-3 bg-dark text-light px-5 py-2 rounded-pill">View All</b></a>
+    </div>
+    <!-- Best Deals End -->
+
+    <!-- Outfit Start -->
+    <div class="row m-3" style="background-color: gainsboro;">
+        <div class="col-sm-6">
+            <div class="p-4 h-100 d-flex flex-column justify-content-center">
+                <h4><b>Exclusive collection 2021</b></h4>
+                <h1 class="fs-1"><b>Be exclusive</b></h1>
+                <p class="mb-5 fs-4">The best everyday option in a Super Saver range within a reasonable price. It is our responsibility&nbsp;to keep you 100 percent stylish. Be smart &amp; , trendy with us.</p>
+                <div class="d-grid gap-2 d-md-block"><a class="btn btn-lg btn-dark" href="#" role="button">Explore</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 p-0">
+            <img src="{% static 'img/outfit.png' %}" alt="outfit" width="100%">
+        </div>
+    </div>
+    <!-- Outfit End -->
+</section>
+
+{% endblock main_body %}

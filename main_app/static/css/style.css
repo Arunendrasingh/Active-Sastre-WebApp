@@ -1,0 +1,518 @@
+/* Cybershaft Stylesheet */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Signika Negative', sans-serif;
+    background: #EEEEEE;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    transition: .4s;
+}
+
+a:hover {
+    color: black;
+}
+
+.navbar a {
+    color: black !important;
+    transition: .4s;
+}
+
+.navbar a:hover {
+    color: teal !important;
+}
+
+.navbar .active {
+    color: teal !important;
+}
+
+.navbar input {
+    width: 300px;
+    border: 2px solid teal;
+    border-top-right-radius: 0rem;
+    border-bottom-right-radius: 0rem;
+    border-top-left-radius: 50rem;
+    border-bottom-left-radius: 50rem;
+}
+
+.navbar input[type="submit"] {
+    margin-left: -10px;
+    width: 80px;
+    border: 2px solid teal;
+    background: teal;
+    color: white;
+    border-top-right-radius: 50rem;
+    border-bottom-right-radius: 50rem;
+    border-top-left-radius: 0rem;
+    border-bottom-left-radius: 0rem;
+    transition: .4s;
+}
+
+.navbar input[type="submit"]:hover {
+    background: white;
+    color: teal;
+}
+
+.header {
+    background-image: url(/static/img/bg.jpg);
+    background-position-x: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 50vh;
+    text-align: center;
+    padding-top: 20vh;
+    color: white;
+}
+
+footer {
+    background-image: url(/static/img/bg1.webp);
+    /* background-image: url(bg/bg1.webp); */
+    background-position-x: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+}
+
+footer input[type=email] {
+    display: block;
+    width: 80%;
+    background: transparent;
+    border: 0px solid transparent;
+    border-bottom: 1px solid #ddd;
+    border-radius: 0;
+    padding: 5px 15px;
+    outline: none;
+    font-size: 16px;
+    color: white;
+}
+
+footer input[type="submit"] {
+    margin: 10px 0;
+    border: 2px solid white;
+    border-radius: 50rem;
+    padding: 5px 20px;
+    background: transparent;
+    color: white;
+    transition: .4s;
+}
+
+footer input[type="submit"]:hover {
+    color: black;
+    background: white;
+}
+
+footer a {
+    margin-left: 8px;
+    text-decoration: none;
+    color: white;
+    display: block;
+}
+
+
+/* visit now: https://www.cybershaft.in/ */
+
+footer a:hover {
+    color: teal;
+}
+
+footer .social a {
+    text-decoration: none;
+    display: inline;
+}
+
+footer svg {
+    display: inline-block;
+    position: absolute;
+}
+
+.signup {
+    background-color: darkslategrey;
+    color: white;
+    text-align: center;
+    padding: 150px 50px;
+}
+
+.signup a {
+    text-decoration: none;
+    color: white;
+    text-transform: uppercase;
+    border: 1px solid white;
+    padding: 15px 30px;
+    border-radius: 5px;
+}
+
+.signup a:hover {
+    color: teal;
+    background-color: white;
+    transition: 0.5s;
+}
+
+.login {
+    background-color: white;
+    color: teal;
+    text-align: left;
+    padding: 100px 100px;
+}
+
+.login form {
+    margin: 50px 0;
+}
+
+.login input {
+    border: 0px solid transparent;
+    border-bottom: 1px solid #ddd;
+    border-radius: 0;
+    width: 100%;
+    padding: 5px 15px;
+    outline: none;
+    font-size: 16px;
+    margin: 15px 0;
+}
+
+.login input[type="submit"] {
+    border-radius: 5px;
+    color: teal;
+    font-size: 20px;
+    background: none;
+    border: 1px solid teal;
+    transition: .4s;
+}
+
+.login input[type="submit"]:hover {
+    color: white;
+    background: teal;
+}
+
+.login a {
+    color: gray;
+    float: right;
+}
+
+.pro-dtls {
+    background-color: white;
+    color: teal;
+    text-align: left;
+    padding: 100px 100px;
+    z-index: 999999;
+}
+
+.pro-dtls a {
+    display: inline-block;
+    margin: 0 auto;
+    border-radius: 5px;
+    color: teal;
+    font-size: 20px;
+    background: none;
+    border: 1px solid teal;
+    padding: 10px 15px;
+    transition: .4s;
+}
+
+.pro-dtls a:hover {
+    color: white;
+    background: teal;
+}
+
+
+/* Cybershaft Stylesheet */
+
+.cart-qntty {
+    font-size: 20px;
+}
+
+.cart-dtl {
+    padding-top: 70px;
+}
+
+.cart-dtl .decrease-qntty {
+    border: 1px solid black;
+    padding: 2px 6px;
+    margin-right: 3px;
+    background: white;
+    padding-left: 10px;
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+}
+
+.cart-dtl .increase-qntty {
+    border: 1px solid black;
+    padding: 2px 6px;
+    margin-left: 3px;
+    background: white;
+    padding-right: 10px;
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+}
+
+.cart-total .col-sm-9 {
+    text-align: right;
+    background: white;
+    padding: 20px 30px;
+    border: 2px solid teal;
+    border-left: unset;
+    font-size: 20px;
+}
+
+.cart-total .col-sm-3 {
+    text-align: right;
+    background: teal;
+    color: white;
+    border: 2px solid teal;
+    padding: 15px 30px;
+    font-size: 25px;
+}
+
+.cart-btn {
+    display: block;
+    width: 80%;
+    margin: auto;
+    margin: 20px 10px;
+    padding: 10px 15px;
+    text-align: center;
+    color: teal;
+    background: white;
+    border: 2px solid teal;
+    transition: .5s;
+}
+
+.cart-btn:hover {
+    color: white;
+    background: teal;
+}
+
+.register {
+    background-color: darkslategrey;
+    color: white;
+    padding: 50px 50px;
+}
+
+.register input[type='submit'] {
+    text-decoration: none;
+    color: white;
+    text-transform: uppercase;
+    border: 1px solid white;
+    padding: 15px 30px;
+    border-radius: 5px;
+    margin-top: 50px;
+}
+
+.register input[type='submit']:hover {
+    color: teal;
+    background-color: white;
+    transition: 0.5s;
+}
+
+.register form {
+    margin: 50px 25px;
+}
+
+.register input {
+    display: block;
+    width: 80%;
+    margin: 15px auto;
+    background: transparent;
+    border: 0px solid transparent;
+    border-bottom: 1px solid #ddd;
+    border-radius: 0;
+    padding: 5px 15px;
+    outline: none;
+    color: white;
+    font-size: 16px;
+}
+
+.checkout select {
+    display: block;
+    width: 80%;
+    margin: 15px auto;
+    background: transparent;
+    border: 0px solid transparent;
+    border-bottom: 1px solid #ddd;
+    border-radius: 0;
+    padding: 5px 15px;
+    outline: none;
+    color: teal;
+    font-size: 16px;
+}
+
+.checkout option {
+    color: teal;
+}
+
+.checkout {
+    background: white;
+    padding: 30px;
+    color: teal;
+}
+
+.method {
+    color: black;
+    box-sizing: border-box;
+    margin: 25px 0;
+}
+
+.method img {
+    width: 100%;
+    overflow: hidden;
+}
+
+.method button {
+    display: block;
+    margin: auto;
+    padding: 5px 20px;
+    background: whitesmoke;
+    border: 2px solid rgb(0, 135, 245);
+    border-radius: 50rem;
+    transition: .4s;
+}
+
+.method button:hover {
+    background: rgb(0, 135, 245);
+    color: white;
+}
+
+
+/* Cybershaft Stylesheet */
+
+.product {
+    background: white;
+    padding: 50px 50px;
+}
+
+.product .col-sm-6 {
+    padding: 25px;
+}
+
+.product img {
+    width: 100%;
+}
+
+.product input {
+    border: 0px solid transparent;
+    background: transparent;
+    color: black;
+    width: 100%;
+    padding: 0 15px;
+    outline: none;
+    font-size: 16px;
+}
+
+.product button {
+    border: 2px solid teal;
+    border-radius: 0px;
+    background: transparent;
+    color: teal;
+    padding: 5px 10px;
+    transition: .4s;
+}
+
+.product button:hover {
+    background: teal;
+    color: white;
+}
+
+.product h4 {
+    color: teal;
+}
+
+.alert {
+    position: fixed;
+    top: 60px;
+    width: 100%;
+    z-index: 99999;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.rate {
+    float: left;
+    height: 46px;
+    padding: 0 10px;
+}
+
+.rate:not(:checked)>input {
+    position: absolute;
+    top: -9999px;
+}
+
+.rate:not(:checked)>label {
+    float: right;
+    width: 1em;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 30px;
+    color: #ccc;
+}
+
+.rate:not(:checked)>label:before {
+    content: '★ ';
+}
+
+.rate>input:checked~label {
+    color: #ffc700;
+}
+
+.rate:not(:checked)>label:hover,
+.rate:not(:checked)>label:hover~label {
+    color: #deb217;
+}
+
+.rate>input:checked+label:hover,
+.rate>input:checked+label:hover~label,
+.rate>input:checked~label:hover,
+.rate>input:checked~label:hover~label,
+.rate>label:hover~input:checked~label {
+    color: #c59b08;
+}
+
+.rate {
+    float: left;
+    height: 46px;
+    padding: 0 10px;
+}
+
+.rate:not(:checked)>input {
+    position: absolute;
+    top: -9999px;
+}
+
+.rate:not(:checked)>label {
+    float: right;
+    width: 1em;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 30px;
+    color: #ccc;
+}
+
+.rate:not(:checked)>label:before {
+    content: '★ ';
+}
+
+.rate>input:checked~label {
+    color: #ffc700;
+}
+
+.rate:not(:checked)>label:hover,
+.rate:not(:checked)>label:hover~label {
+    color: #deb217;
+}
+
+.rate>input:checked+label:hover,
+.rate>input:checked+label:hover~label,
+.rate>input:checked~label:hover,
+.rate>input:checked~label:hover~label,
+.rate>label:hover~input:checked~label {
+    color: #c59b08;
+}
+
+
+/* Modified from: https://github.com/mukulkant/Star-rating-using-pure-css */

@@ -1,0 +1,28 @@
+{% extends "base.html" %} {% load static %} {% block title %}Active Sastre-All Product {% endblock title %} {% block active1 %} active {% endblock active1 %} {% block main_body %}
+<section>
+    <div class="header">
+        <h1>All Product</h1>
+    </div>
+</section>
+<section>
+    <div class="row row-cols-1 row-cols-md-4 g-4 m-3">
+        <!-- Adding Jinja Template -->
+        {% for product in all_product %}
+        {% if product.total_num != 0 %}
+        <div class="col">
+            <a href="/product/{{product.id}}">
+                <div class="card h-100">
+                    <img src="/media/{{product.thumbnail_image}}" class="card-img-top" style="height: 300px;" alt="product">
+                    <div class="card-body">
+                        <h4 class="card-title"><b>{{product.name}}</b></h4>
+                        <p class="card-text" style="color: gray;">{{product.design_pattern}}</p>
+                        <h5 class="card-title"><s style="color: darkgray;">₹{{product.price}}&nbsp;</s>₹{{product.new_price}}<P class="card-text" style="color:green ;"><small>up to {{product.discount}}% off</small></P></h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</section>
+{% endblock main_body %}

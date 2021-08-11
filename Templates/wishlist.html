@@ -1,0 +1,56 @@
+{% extends "base.html" %} {% load static %} {% block title %}Active Sastre-Wishlist {% endblock title %}  {% block main_body %}
+<section>
+    {% if messages %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+             {% for message in messages %} {{message}} {% endfor %}.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+    <div class="header">
+        <h1>Wish List</h1>
+    </div>
+    <div class="container my-5">
+        {% if num_wish == 0 %}
+            <tr>
+                <td>
+                    <h5>No items in Cart!</h5>
+                </td>
+            </tr>
+        {% else %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col" colspan="2">Product</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                
+                {% for product in Product_Detail %}
+                <tr>
+                    <td>
+                        <a href="#">
+                            <img src="/media/{{product.product_detail.thumbnail_image}}" height="150px" alt="">
+                        </a>
+                    </td>
+                    <td class="cart-dtl">{{product.product_detail.name}}</td>
+                    <td class="cart-dtl">₹{{product.product_detail.new_price}}</td>
+                    <td class="cart-dtl" > <a href="product/{{product.product_detail.id}}" class="btn btn-info">Add-to cart</a> <br><br><a href="/delete_from/{{product.wishlist.id}}" class="btn btn-danger">Delete</a></td>
+                </tr>
+            </tbody>
+        </table>
+        {% endfor %}
+        <div class="row">
+            <div class="col-sm-9"></div>
+            <div class="col-sm-3">
+                <a class="cart-btn" href="#">Add to Cart</a>
+                <a class="cart-btn" href="">Continue Shopping</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+<!-- Footer Start -->
+{% endblock main_body %}

@@ -1,0 +1,214 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mobstyle.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Signika+Negative&display=swap" rel="stylesheet">
+
+    <title>
+        {% block title %}
+        <!-- your title here -->
+        {% endblock title %}
+    </title>
+    <script type="text/javascript">
+        window.setTimeout(function() {
+            $(".alert").fadeTo(500, 0).slideUp(500, function() {
+                $(this).hide();
+            });
+        }, 2000);
+    </script>
+</head>
+
+<body>
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="position:sticky; top: 0; z-index: 10000;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="{% static 'img/active_3.jpeg' %}" alt="" width="50" height="50" style="border-radius: 50%;"> Active Sastre
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link {% block active %} {% endblock active %}" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% block active1 %} {% endblock active1 %}" href="About" >About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% block active2 %} {% endblock active2 %}" href="contact">Contact</a>
+                    </li>
+                </ul>
+                <!-- <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <input class="btn btn-outline-success" type="submit">
+                </form> -->
+                <div class="d-flex ml-5">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        {%if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="user" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <!-- <img src="{% static 'img/user.svg' %}" alt="user" height="20px"> -->Welcome, {{user.first_name}} {{user.last_name}}
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="user">
+                                <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                                <li><a class="dropdown-item" href="/wishlist">Wishlist</a></li>
+                                <li><a class="dropdown-item" href="/cart">Cart</a></li>
+                                <li><a class="dropdown-item" href="/your_order">Your Order</a></li>
+
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="/logout">Log Out</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/wishlist" class="nav-link">
+                                <img src="{% static 'img/heart.svg' %}" alt="user" height="20px">
+                                <!-- <span class="position-absolute translate-middle badge text-danger">
+                                    9
+                                </span> -->
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/cart" class="nav-link">
+                                <img src="{% static 'img/shopping-bag.svg' %}" alt="user" height="20px">
+                                <!-- <span class="position-absolute translate-middle badge text-danger">
+                                    5
+                                </span> -->
+                            </a>
+                        </li>
+                        <!-- Logged In -->
+                        
+                        {% else %}
+                        <li class="nav-item">
+                            <a href="login" class="nav-link active">
+                                <img src="{% static 'img/user.svg' %}" alt="user" height="20px">
+                                <li class="nav-item">Login</li>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Navbar End -->
+    {% block main_body %}
+    <!-- main content place here -->
+    {% endblock main_body %}
+    <!-- Footer Start -->
+    <footer>
+        <div class="row px-3 py-5 mx-auto">
+            <div class="col-sm-8 p-3">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h5>Company Info</h5>
+                        <a href="#"> About Us</a>
+                        <a href="#"> Affiliate</a>
+                        <a href="#"> Fasions</a>
+                    </div>
+                    <div class="col-sm-3">
+                        <h5>Help & Support</h5>
+                        <a href="#"> Shipping Info</a>
+                        <a href="#"> Refunds</a>
+                        <a href="#"> How to Order</a>
+                        <a href="#"> How to Track</a>
+                        <a href="#"> Size Guide</a>
+                    </div>
+                    <div class="col-sm-3">
+                        <h5>Customer Care</h5>
+                        <a href="#"> Contact Us</a>
+                        <a href="#"> Payment Methods</a>
+                        <a href="#"> Bonus Point</a>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-sm-12 social">
+                        <a href="#" class="mx-4">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                            </svg>
+                        </a>
+                        <a href="#" class="mx-4">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                            </svg>
+                        </a>
+                        <a href="#" class="mx-4">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z">
+                                </path>
+                                <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+                            </svg>
+                        </a>
+                        <a href="#" class="mx-4">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z">
+                                </path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4 p-3">
+                <h5>
+                    <b>Subscribe to our newsletter</b> <br>
+                </h5>
+                <form action="#">
+                    <input class="my-3" type="email" placeholder="Email">
+                    <input class="my-3" type="submit" value="Subscribe">
+                </form>
+                <br>
+                <a class="my-3 fs-5" href="tel:+91 7738008852">
+                    <img src="{% static 'img/phone.svg' %}" alt="call" width="30px"> &nbsp; &nbsp; +91 7738008852
+                </a>
+                <a class="my-3 fs-5" href="#"> <img src="{% static 'img/envelope.svg' %}" alt="envelope" width="30px">&nbsp; &nbsp; Activesastre@gmail.com
+                </a>
+
+
+            </div>
+            <hr>
+            <div class="text-center social">
+                Copyright © 2021 | All rights reserved by <a href="#">Active Sastre</a>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer End -->
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="{% static 'js/jquery-1.9.1.min.js' %}"></script>
+    <!-- <script src="{% static 'slick/slick.min.js' %}"></script> -->
+    <!-- <script src="{% static 'magnific-popup/jquery.magnific-popup.min.js' %}"></script> -->
+    <!-- <script src="{% static 'js/easing.min.js' %}"></script> -->
+    <!-- <script src="{% static 'js/jquery.singlePageNav.min.js' %}"></script> -->
+    <!-- <script src="{% static 'js/bootstrap.min.js' %}"></script> -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+-->
+</body>
+
+</html>

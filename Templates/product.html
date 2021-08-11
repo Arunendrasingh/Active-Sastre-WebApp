@@ -1,0 +1,121 @@
+{% extends "base.html" %} {% load static %} {% block title %}Active Sastre-Product{% endblock title %}  {% block main_body %}
+<section>
+    {% if messages %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+             {% for message in messages %} {{message}} {% endfor %}.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+    <div class="header">
+        <h1>Product Details</h1>
+    </div>
+    <div class="container my-5">
+        <div class="product">
+            <div class="row">
+                <div class="col-sm-6">
+                    <!-- <img src="/media/{{product_info.thumbnail_image}}" style="height: 470px;" alt="product"> -->
+                    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            {% for img in pro_img %}
+                        <div class="carousel-item {% if forloop.first %} active {% endif %}">
+                            <img src="/media/{{img.image}}" class="d-block w-100" alt="...">
+                        </div>
+                        {% endfor %}
+                    </div>
+                        <button class="carousel-control-prev" style="border: none;" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                          <span class="carousel-control-prev-icon" aria-hidden="false"></span>
+                          <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" style="border: none;" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Next</span>
+                        </button>
+                      </div>
+                </div>
+                <div class="col-sm-6">
+                    <h4>{{product_info.name}}</h4>
+                    <hr>
+                    <div class="row">
+                        <div class="col-6" style="color: hotpink;">
+                            Price:
+                            <hr> Availability:
+                            <hr> Model:
+                            <hr> Manufacturer:
+                            <hr> Size Of Product:
+                            <!-- <button>Add to Wishlist</button> -->
+                        </div>
+                        <div class="col-6">
+                            <h5 class="card-title">₹{{product_info.new_price}}&nbsp;</h5>
+                            <hr> In Stock
+                            <hr> {{product_info.design_pattern}}
+                            <hr> Active Sastre
+                            <hr><p>In Meter <input type="number" name="size"  placeholder="e.g. 3 meter">
+                            </p>
+                            <a href="/add_to_cart/{{product_info.id}}" class="btn btn-info">Add to Cart</a>
+                            <a href="/add_to_wishlist/{{product_info.id}}" class="btn btn-info">Add to Wishlist</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <h4>Product Description</h4>
+                <hr>
+                <p>
+                {{product_info.Specification}}
+                </p>
+                <hr>
+            </div>
+            <div class="container">
+                <h5 style="color: rgb(2, 70, 41);"><strong>Ratings & Reviews: -</strong></h5>
+                <div class="card">
+                    {% for rating in rateing_obj %}
+                    <div class="card-header">
+                      Rating -{{forloop.counter|center:"5"}}
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Product Quality:-{{rating.product_quality|center:"5"}}  ⭐</li>
+                            <li class="list-group-item">Stitching Quality:-  {{rating.stiching_quality|center:"5"}}⭐</li>
+                            <li class="list-group-item">Fitting:- {{rating.fitting_quality|center:"5"}}⭐</li>
+                            <li class="list-group-item">How much you liked Product:- {{rating.liked|center:"5"}}⭐</li>
+                        </ul>
+                        <hr>
+                      <h5 class="card-title">About Product:-</h5>
+                      <p class="card-text">{{rating.message}}</p>
+                      <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                    </div>
+                    {% empty %}
+                    <h5>No Review Yet !</h5>
+                    <p>Be the first Reviewer</p>
+
+                    {% endfor %}
+                  </div>
+            </div>
+            <div class="container text-center mt-5">
+                <h4 style="border-bottom: 2px solid teal; display: inline;
+                    padding: 5px 15px;"> Other Products </h4>
+                <div class="row row-cols-1 row-cols-md-4 g-4 m-3">
+                    {% for product in all_product %}
+                    {% if product.total_num != 0 %}
+                    <div class="col">
+                        <a href="/product/{{product.id}}">
+                            <div class="card h-100">
+                                <img src="/media/{{product.thumbnail_image}}" class="card-img-top" alt="product">
+                                <div class="card-body">
+                                    <h4 class="card-title"><b>{{product.name}}</b></h4>
+                                    <p class="card-text" style="color: gray;">{{product.design_pattern}}</p>
+                                    <h5 class="card-title"><s style="color: darkgray;">₹{{product.price}}&nbsp;</s>₹{{product.new_price}}<P class="card-text" style="color:green ;"><small>up to {{product.discount}}% off</small></P></h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <button>View All</button>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Footer Start -->
+{% endblock main_body %}

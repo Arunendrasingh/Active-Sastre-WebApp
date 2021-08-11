@@ -1,0 +1,80 @@
+{% extends "base.html" %} {% load static %} {% block title %}Active Sastre-Check Out{% endblock title %} {% block main_body %}
+<section>
+    {% if messages %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+             {% for message in messages %} {{message}} {% endfor %}.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+    <div class="header">
+        <h1>Checkout</h1>
+    </div>
+    <div class="container my-5">
+        <form action="/place_order" method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-sm-8 checkout mx-auto">
+                    <h4 class="fs-2">Checkout</h4>
+		        <h4>Checkout ( Please add address and size from Profile Section)</h4>
+                    <hr>
+                    <label class="fs-5" for="Address">Address:</label>
+                    <select class="form-select" aria-label="Default select example" required  name="address" id="Address">
+                        {% for address in address %}
+                            <option value="Name: {{address.name}}, Contact No: {{address.contact_no}},City: {{address.city}},House No:{{address.house_no}},Landmark:{{address.area_landmark}},State:{{address.state}},Pin: {{address.pin_code}},Order Date{{address.date_time}}" {% if forloop.first %} selected {% endif %}>
+                                {{address.name}}
+                            </option>
+                        {% endfor %}
+                        </select>
+                    <label class="fs-5" for="size">Size:</label>
+                    <select class="form-select" aria-label="Default select example" required  name="size" id="size">
+                        {% for size in size %}
+                            <option value="{{size.id}} {{size.gender}}">{{size.name}}</option>
+                            <!-- <input type="hidden" name="gender" value="{{size.gender}}"> -->
+                        {% endfor %}
+                        {% for size1 in malesize %}
+                        <!-- <input type="hidden" name="gender" value="{{size1.gender}}"> -->
+                            <option value="{{size1.id}} {{size1.gender}}">{{size1.name}}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
+                    <br>
+                    <hr>
+                    <h4 class="fs-3">Shopping Cart</h4><br>
+
+                    <div class="card mb-3" style="max-width: 540px;">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="/media/{{product_obj.thumbnail_image}}" class="img-fluid rounded-start" alt="...">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <input type="hidden" name="cart_id" value="{{cart_obj.id}}">
+                                    <input type="hidden" name="prod_id" value="{{product_obj.id}}">
+                                    <input type="hidden" name="prod_name" value="{{product_obj.name}}">
+                                    <input type="hidden" name="prod_price" value="{{product_obj.new_price}}">
+                                    <input type="hidden" name="product_num" value="{{cart_obj.prod_quantity}}">
+                                    <input type="hidden" name="total_price" value="{{cart_obj.prod_amount}}">
+                                    <!-- <input type="hidden" name="designid" value="{{design_obj.id}}">
+                                    <input type="hidden" name="designname" value="{{design_obj.name}}">
+                                    <input type="hidden" name="designprice" value="{{design_obj.price}}"> -->
+                                    <input type="hidden" name="user_name" value="{{user.first_name}} {{user.last_name}}">
+                                    <h5 class="card-title text-dark"> <strong style="color: red;">Product Name: </strong> {{product_obj.name}}</h5>
+                                    <p class="carf-text"><strong style="color: red;">Product Price: </strong> {{cart_obj.prod_amount}}</p>
+                                    <p class="carf-text"><strong style="color: red;">Total Product :</strong> {{cart_obj.prod_quantity}}</p>
+                                    <!-- <p class="carf-text"><strong style="color: red;">Design Name: </strong> <a href="#">{{design_obj.name}}</a></p>
+                                    <p class="carf-text"><strong style="color: red;">Design Price :</strong> {{design_obj.price}}</p> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <button href="#" class="btn btn-info" type="submit">Place Order</button>
+                    </div>
+                    <h4>Currently supporting cash on delivery only</h4>
+                    <hr>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock main_body %}

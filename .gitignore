@@ -1,0 +1,7 @@
+.vs/
+media
+Active_sastre/__pycache__
+main_app/__pycache__
+main_app/migrations
+db.sqlite3
+.idea/
