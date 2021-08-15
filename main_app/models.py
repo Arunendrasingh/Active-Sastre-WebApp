@@ -138,6 +138,7 @@ class Wishlist(models.Model):
 
 
 class size_detail(models.Model):
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     name = models.CharField((u"Size Detail"), max_length=100)
     gender = models.CharField((u"Gender"), max_length=10)
     design_type = models.CharField((u"Design Type Of clothes"), max_length=50)
