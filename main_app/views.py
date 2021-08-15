@@ -59,10 +59,6 @@ def about(request):
     return render(request, "about.html")
 
 
-# @login_required(login_url='/login')
-# def cart(request):
-#     return render(request, "cart.html")
-
 
 @login_required(login_url='/login')
 def checkout(request, p_id):
@@ -204,8 +200,9 @@ def cart(request):
     cart_obj = MyCart.objects.filter(user_id=request.user.id)
     prods = []
     for cart in cart_obj:
-        prods.append({'prods': Product_detail.objects.filter(id=cart.product_id)[
-            0], 'cartdtls': cart})
+        if Product_detail.objects.filter(id=cart.product_id).exists():
+            prods.append({'prods': Product_detail.objects.filter(id=cart.product_id)[
+                0], 'cartdtls': cart})
     n_cartprods = len(cart_obj)
     carttotal = 0
     for item in cart_obj:
