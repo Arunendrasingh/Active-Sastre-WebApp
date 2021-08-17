@@ -159,6 +159,24 @@ class blouse(models.Model):
     armhole_around = models.FloatField()
 
 
+class kurti(models.Model):
+    size_detail = models.ForeignKey(size_detail, null=True, on_delete=models.CASCADE)
+    dress_length = models.FloatField()
+    sleev_length = models.FloatField()
+    neckline = models.FloatField()
+    upper_bust = models.FloatField()
+    chest_bust = models.FloatField()
+    stomach = models.FloatField()
+    hip = models.FloatField()
+    shoulder = models.FloatField()
+    arm_hole = models.FloatField()
+    waist = models.FloatField()
+    thigh = models.FloatField()
+    knee = models.FloatField()
+    calf = models.FloatField()
+    ankel_hem = models.FloatField()
+
+
 class MailSize(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)

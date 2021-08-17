@@ -603,6 +603,8 @@ class size:
                         messages.info(
                             request, "Female Size for blouse is added Successfully!"
                         )
+                else:
+                    print("fsdgsdfg")
             else:
                 size_obj_mail = MailSize(
                     user=user_obj,
