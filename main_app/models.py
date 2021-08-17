@@ -177,6 +177,39 @@ class kurti(models.Model):
     ankel_hem = models.FloatField()
 
 
+class for_lahenga(models.Model):
+    size_detail = models.ForeignKey(size_detail, null=True, on_delete=models.CASCADE)
+    front_neck_depth = models.FloatField()
+    around_bust = models.FloatField()
+    neck_to_shoulder = models.FloatField()
+    upper_waist = models.FloatField()
+    blouse_length = models.FloatField()
+    shoulder = models.FloatField()
+    back_neck_depth = models.FloatField()
+    around_armholes = models.FloatField()
+    # around_arm = models.FloatField()
+    sleeve_length = models.FloatField()
+    waist = models.FloatField()
+    hips = models.FloatField()
+    waist_to_ankel = models.FloatField()
+    full_body = models.FloatField()
+
+
+class for_gown(models.Model):
+    size_detail = models.ForeignKey(size_detail, null=True, on_delete=models.CASCADE)
+    gown_length = models.FloatField()
+    upper_chest = models.FloatField()
+    chest = models.FloatField()
+    waist = models.FloatField()
+    stomach = models.FloatField()
+    hips = models.FloatField()
+    shoulder = models.FloatField()
+    front_neck_depth = models.FloatField()
+    sleeve_length = models.FloatField()
+    sleeve_round = models.FloatField()
+    arm_hole = models.FloatField()
+
+
 class MailSize(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
