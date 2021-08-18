@@ -15,7 +15,7 @@ from main_app.models import (
     Oreder_Detail,
     Product_detail,
     Profile,
-    MailSize,
+    male_pantshirt,
     Product_Img,
     MyCart,
     Wishlist,
@@ -84,7 +84,7 @@ def checkout(request, p_id):
 
     size_obj = Femail_size_Chart.objects.filter(user=user_obj.id)
     product_obj = Product_detail.objects.filter(id=p_id)[0]
-    get_size_mail = MailSize.objects.filter(user=request.user)
+    get_size_mail = male_pantshirt.objects.filter(user=request.user)
     cart_obj = MyCart.objects.filter(product_id=p_id)[0]
     main_info = {
         "address": address_obj,
@@ -171,7 +171,7 @@ def place_order(request):
                 + str(size_obj.full_body_lenght)
             )
         else:
-            size_obj = MailSize.objects.filter(id=int(value[0]))[0]
+            size_obj = male_pantshirt.objects.filter(id=int(value[0]))[0]
             size_name = size_obj.name
             size_detail = (
                 "Paint Length:-"
@@ -267,16 +267,14 @@ def product(request, pid):
 @login_required(login_url="/login")
 def profile(request):
     get_address = Address.objects.filter(user=request.user)
-    get_size_femail = Femail_size_Chart.objects.filter(user=request.user)
-    get_size_mail = MailSize.objects.filter(user=request.user)
+    get_size = size_detail.objects.filter(user=request.user)
     get_user = User.objects.filter(id=request.user.id)[0]
     get_profile = Profile.objects.filter(user=get_user)[0]
     pass_data = {
         "totaladdress": len(get_address),
         "address": get_address,
-        "totalsize": len(get_size_femail),
-        "femalesize": get_size_femail,
-        "malesize": get_size_mail,
+        "totalsize": len(get_size),
+        "size": get_size,
         "get_user": get_user,
         "get_profile": get_profile,
     }
@@ -610,6 +608,7 @@ class size:
                         messages.info(
                             request, "Female Size for blouse is added Successfully!"
                         )
+                        return redirect("/profile")
                     elif request.POST["design"] == "kurti":
                         obj_size = getsizeobj(
                             user_obj,
@@ -638,6 +637,7 @@ class size:
                         messages.info(
                             request, "Female Size for Kurti is added Successfully!"
                         )
+                        return redirect("/profile")
                     elif request.POST["design"] == "gown":
                         obj_size = getsizeobj(
                             user_obj,
@@ -647,6 +647,7 @@ class size:
                         )
 
                         gown_data = for_gown(
+                            size_detail=obj_size,
                             gown_length=request.POST["gown_length"],
                             upper_chest=request.POST["upper_Chest"],
                             chest=request.POST["s_Chest"],
@@ -663,6 +664,7 @@ class size:
                         messages.info(
                             request, "Female Size for Gown is added Successfully!"
                         )
+                        return redirect("/profile")
                     elif request.POST["design"] == "lahenga":
                         obj_size = getsizeobj(
                             user_obj,
@@ -671,6 +673,7 @@ class size:
                             request.POST["design"],
                         )
                         lahenga_data = for_lahenga(
+                            size_detail=obj_size,
                             front_neck_depth=request.POST["front_neck_depth"],
                             around_bust=request.POST["around_bust"],
                             neck_to_shoulder=request.POST["neck_to_solider"],
@@ -690,123 +693,224 @@ class size:
                         messages.info(
                             request, "Female Size for Lahenga is added Successfully!"
                         )
+                        return redirect("/profile")
                 else:
-                    size_obj_mail = MailSize(
-                        user=user_obj,
-                        gender=request.POST["femail"],
-                        name=request.POST["name"],
-                        p_length=request.POST["p_Length"],
-                        p_Waist=request.POST["p_Waist"],
-                        p_Hips=request.POST["p_Hips"],
-                        p_Thigh=request.POST["p_Thigh"],
-                        p_Knee=request.POST["p_Knee"],
-                        p_Leg_Opening=request.POST["p_LegOpening"],
-                        p_Crotch_Or_Rise=request.POST["p_Crotch"],
-                        p_In_Seam=request.POST["p_Seam"],
-                        s_Shirt_lenght=request.POST["s_ShirtLen"],
-                        s_Sleeve_Length=request.POST["s_Sleeve"],
-                        s_Shoulders=request.POST["s_Shoulders"],
-                        s_Chest=request.POST["s_Chest"],
-                        s_Overarm=request.POST["s_Overarm"],
-                        s_Waistcoat_Length=request.POST["Waistcoat"],
-                        s_Bicep_Loose=request.POST["s_Bicep"],
-                        s_Front_Chest=request.POST["s_FrontChest"],
-                        s_Front_Stomach=request.POST["s_Stomach"],
-                        s_Front_Hips=request.POST["s_Hips"],
-                        s_Wrist=request.POST["s_Wrist"],
-                        s_Neck=request.POST["s_Neck"],
-                    )
-                    size_obj_mail.save()
-                    messages.info(request, "Male Size is added Successfully!")
-                return redirect("/profile")
+                    if request.POST["design"] == "pantshirt":
+                        obj_size = getsizeobj(
+                            user_obj,
+                            request.POST["name"],
+                            request.POST["gender"],
+                            request.POST["design"],
+                        )
+                        size_obj_mail = male_pantshirt(
+                            size_detail=obj_size,
+                            p_length=request.POST["p_Length"],
+                            p_Waist=request.POST["p_Waist"],
+                            p_Hips=request.POST["p_Hips"],
+                            p_Thigh=request.POST["p_Thigh"],
+                            p_Knee=request.POST["p_Knee"],
+                            p_Leg_Opening=request.POST["p_LegOpening"],
+                            p_Crotch_Or_Rise=request.POST["p_Crotch"],
+                            p_In_Seam=request.POST["p_Seam"],
+                            s_Shirt_lenght=request.POST["s_ShirtLen"],
+                            s_Sleeve_Length=request.POST["s_Sleeve"],
+                            s_Shoulders=request.POST["s_Shoulders"],
+                            s_Chest=request.POST["s_Chest"],
+                            s_Overarm=request.POST["s_Overarm"],
+                            s_Waistcoat_Length=request.POST["Waistcoat"],
+                            s_Bicep_Loose=request.POST["s_Bicep"],
+                            s_Front_Chest=request.POST["s_FrontChest"],
+                            s_Front_Stomach=request.POST["s_Stomach"],
+                            s_Front_Hips=request.POST["s_Hips"],
+                            s_Wrist=request.POST["s_Wrist"],
+                            s_Neck=request.POST["s_Neck"],
+                        )
+                        size_obj_mail.save()
+                        messages.info(request, "Male Size is added Successfully!")
+                    return redirect("/profile")
 
     @login_required(login_url="/login")
     def delete_size(request, id, g_id):
-        if g_id == "female":
-            del_size = Femail_size_Chart.objects.get(user=request.user, id=id)
-            del_size.delete()
-        else:
-            del_size = MailSize.objects.get(user=request.user, id=id)
-            del_size.delete()
+        del_size = size_detail.objects.get(user=request.user, id=id)
+        del_size.delete()
         messages.info(request, "Size is Deleted Successfully!")
         return redirect("/profile")
 
     @login_required(login_url="/login")
-    def view_size(request, s_id, s_ge):
-        if s_ge == "female":
-            obj = Femail_size_Chart.objects.filter(id=s_id)[0]
-        else:
-            obj = MailSize.objects.filter(id=s_id)[0]
-
+    def view_size(request, s_id):
+        obj = size_detail.objects.filter(id=s_id)[0]
+        if obj.design_type == "pantshirt":
+            size_value = male_pantshirt.objects.filter(size_detail=obj)[0]
+        elif obj.design_type == "blouse":
+            size_value = blouse.objects.filter(size_detail=obj)[0]
+        elif obj.design_type == "kurti":
+            size_value = kurti.objects.filter(size_detail=obj)[0]
+        elif obj.design_type == "lahenga":
+            size_value = for_lahenga.objects.filter(size_detail=obj)[0]
+        elif obj.design_type == "gown":
+            size_value = for_gown.objects.filter(size_detail=obj)[0]
         size_cart = {
             "sizechart": obj,
+            "chartsize": size_value,
         }
         return render(request, "size_m.html", size_cart)
 
     @login_required(login_url="/login")
     def update_size(request, s_id, s_ge):
         if request.method == "POST":
-            if s_ge == "femail":
-                obj = Femail_size_Chart.objects.filter(id=s_id)[0]
-                obj.name = request.POST["name"]
-                obj.gender = request.POST["femail"]
-                obj.gown_length = request.POST["gown_length"]
-                obj.upper_chest = request.POST["upper_Chest"]
-                obj.chest = request.POST["chest"]
-                obj.waist = request.POST["waist"]
-                obj.upper_waist = request.POST["upper_waist"]
-                obj.stomach = request.POST["stomach"]
-                obj.hips = request.POST["hips"]
-                obj.shoulder = request.POST["shoulder"]
-                obj.front_neck_depth = request.POST["front_neck_depth"]
-                obj.back_neck_depth = request.POST["back_neck_depth"]
-                obj.neck_to_solider = request.POST["neck_to_solider"]
-                obj.sleeve_length = request.POST["sleeve_length"]
-                obj.sleev_around = request.POST["sleeve_around"]
-                obj.around_bust = request.POST["around_bust"]
-                obj.blouse_length = request.POST["blouse_length"]
-                obj.arm_hole = request.POST["arm_hole"]
-                obj.waist_to_ankel_length = request.POST["waist_to_ankel_length"]
-                obj.full_body_lenght = request.POST["full_body_lenght"]
-                obj.dress_length = request.POST["dress_length"]
-                obj.neck_line = request.POST["neck_line"]
-                obj.upper_bust = request.POST["upper_bust"]
-                obj.chest_bust = request.POST["chest_bust"]
-                obj.thigh = request.POST["thigh"]
-                obj.knee = request.POST["knee"]
-                obj.calf = request.POST["calf"]
-                obj.ankel_hem = request.POST["ankel_hem"]
-                obj.shoulder_full_lenght = request.POST["shoulder_full_lenght"]
-                obj.save()
-                messages.info(request, "Female Size is Changed Successfully!")
-                return redirect("/profile")
+
+            def getsizeobj(_user_obj, _name, _gender, _design):
+                obj_size = size_detail.objects.filter(
+                    id=_user_obj, name=_name, gender=_gender, design_type=_design
+                )[0]
+                return obj_size
+
+            if request.POST["gender"] == "female":
+                if request.POST["design"] == "blouse":
+                    obj_size1 = getsizeobj(
+                        s_id,
+                        request.POST["name"],
+                        request.POST["gender"],
+                        request.POST["design"],
+                    )
+                    design_size = blouse.objects.filter(id=s_ge, size_detail=obj_size1)[
+                        0
+                    ]
+                    design_size.shoulders = request.POST["shoulder"]
+                    design_size.shouldersfull_lenght = request.POST[
+                        "shoulder_full_lenght"
+                    ]
+                    design_size.front_neck_depth = request.POST["front_neck_depth"]
+                    design_size.chest_around = request.POST["chest_around"]
+                    design_size.waist_around = request.POST["waist_around"]
+                    design_size.back_neck_depth = request.POST["back_neck_depth"]
+                    design_size.blouse_length = request.POST["blouse_length"]
+                    design_size.sleeve_length = request.POST["sleeve_length"]
+                    design_size.sleeve_around = request.POST["sleeve_around"]
+                    design_size.armhole_around = request.POST["arm_hole_around"]
+                    design_size.save()
+                    messages.info(request, "Female Size for blouse is added Updated!")
+                    return redirect("/profile")
+                elif request.POST["design"] == "kurti":
+                    obj_size1 = getsizeobj(
+                        s_id,
+                        request.POST["name"],
+                        request.POST["gender"],
+                        request.POST["design"],
+                    )
+                    kurti_size = kurti.objects.filter(id=s_ge, size_detail=obj_size1)[0]
+                    kurti_size.dress_length = request.POST["dress_length"]
+                    kurti_size.sleev_length = request.POST["sleeve_length"]
+                    kurti_size.neckline = request.POST["neck_line"]
+                    kurti_size.upper_bust = request.POST["upper_bust"]
+                    kurti_size.chest_bust = request.POST["chest_bust"]
+                    kurti_size.stomach = request.POST["stomach"]
+                    kurti_size.hip = request.POST["p_Hips"]
+                    kurti_size.shoulder = request.POST["shoulder"]
+                    kurti_size.arm_hole = request.POST["armhole"]
+                    kurti_size.waist = request.POST["waist"]
+                    kurti_size.thigh = request.POST["thigh"]
+                    kurti_size.knee = request.POST["p_Knee"]
+                    kurti_size.calf = request.POST["calf"]
+                    kurti_size.ankel_hem = request.POST["ankel_hem"]
+                    kurti_size.save()
+                    messages.info(
+                        request, "Female Size for Kurti is Updated Successfully!"
+                    )
+                    return redirect("/profile")
+                elif request.POST["design"] == "gown":
+                    obj_size1 = getsizeobj(
+                        s_id,
+                        request.POST["name"],
+                        request.POST["gender"],
+                        request.POST["design"],
+                    )
+                    gown_data = for_gown.objects.filter(id=s_ge, size_detail=obj_size1)[
+                        0
+                    ]
+                    # size_detail=obj_size,
+                    gown_data.gown_length = (request.POST["gown_length"],)
+                    gown_data.upper_chest = (request.POST["upper_Chest"],)
+                    gown_data.chest = (request.POST["s_Chest"],)
+                    gown_data.waist = (request.POST["waist"],)
+                    gown_data.stomach = (request.POST["stomach"],)
+                    gown_data.hips = (request.POST["p_Hips"],)
+                    gown_data.shoulder = (request.POST["shoulder"],)
+                    gown_data.front_neck_depth = (request.POST["front_neck_depth"],)
+                    gown_data.sleeve_length = (request.POST["sleeve_length"],)
+                    gown_data.sleeve_round = (request.POST["sleeve_around"],)
+                    gown_data.arm_hole = (request.POST["arm_hole"],)
+                    gown_data.save()
+                    messages.info(
+                        request, "Female Size for Gown is added Successfully!"
+                    )
+                    return redirect("/profile")
+                elif request.POST["design"] == "lahenga":
+                    obj_size1 = getsizeobj(
+                        s_id,
+                        request.POST["name"],
+                        request.POST["gender"],
+                        request.POST["design"],
+                    )
+                    lahenga_data = for_lahenga.objects.filter(
+                        id=s_ge, size_detail=obj_size1
+                    )[0]
+                    # size_detail=obj_size,
+                    lahenga_data.front_neck_depth = (request.POST["front_neck_depth"],)
+                    lahenga_data.around_bust = (request.POST["around_bust"],)
+                    lahenga_data.neck_to_shoulder = (request.POST["neck_to_solider"],)
+                    lahenga_data.upper_waist = (request.POST["upper_waist"],)
+                    lahenga_data.blouse_length = (request.POST["blouse_length"],)
+                    lahenga_data.shoulder = (request.POST["shoulder"],)
+                    lahenga_data.back_neck_depth = (request.POST["back_neck_depth"],)
+                    lahenga_data.around_armholes = (request.POST["arm_hole"],)
+                    lahenga_data.sleeve_length = (request.POST["sleeve_length"],)
+                    lahenga_data.waist = (request.POST["waist"],)
+                    lahenga_data.hips = (request.POST["p_Hips"],)
+                    lahenga_data.waist_to_ankel = (
+                        request.POST["waist_to_ankel_length"],
+                    )
+                    lahenga_data.full_body = (request.POST["full_body_lenght"],)
+                    lahenga_data.save()
+                    messages.info(
+                        request, "Female Size for Lahenga is added Successfully!"
+                    )
+                    return redirect("/profile")
             else:
-                obj = MailSize.objects.filter(id=s_id)[0]
-                obj.gender = request.POST["femail"]
-                obj.name = request.POST["name"]
-                obj.p_length = request.POST["p_Length"]
-                obj.p_Waist = request.POST["p_Waist"]
-                obj.p_Hips = request.POST["p_Hips"]
-                obj.p_Thigh = request.POST["p_Thigh"]
-                obj.p_Knee = request.POST["p_Knee"]
-                obj.p_Leg_Opening = request.POST["p_LegOpening"]
-                obj.p_Crotch_Or_Rise = request.POST["p_Crotch"]
-                obj.p_In_Seam = request.POST["p_Seam"]
-                obj.s_Shirt_lenght = request.POST["s_ShirtLen"]
-                obj.s_Sleeve_Length = request.POST["s_Sleeve"]
-                obj.s_Shoulders = request.POST["s_Shoulders"]
-                obj.s_Chest = request.POST["s_Chest"]
-                obj.s_Overarm = request.POST["s_Overarm"]
-                obj.s_Waistcoat_Length = request.POST["Waistcoat"]
-                obj.s_Bicep_Loose = request.POST["s_Bicep"]
-                obj.s_Front_Chest = request.POST["s_FrontChest"]
-                obj.s_Front_Stomach = request.POST["s_Stomach"]
-                obj.s_Front_Hips = request.POST["s_Hips"]
-                obj.s_Wrist = request.POST["s_Wrist"]
-                obj.s_Neck = request.POST["s_Neck"]
-                obj.save()
-                messages.info(request, "Male Size is Changed Successfully!")
-                return redirect("/profile")
+                if request.POST["design"] == "pantshirt":
+                    obj_size1 = getsizeobj(
+                        s_id,
+                        request.POST["name"],
+                        request.POST["gender"],
+                        request.POST["design"],
+                    )
+                    size_obj_mail = male_pantshirt.objects.filter(
+                        id=s_ge, size_detail=obj_size1
+                    )[0]
+                    # size_detail=obj_size,
+                    size_obj_mail.p_length = (request.POST["p_Length"],)
+                    size_obj_mail.p_Waist = (request.POST["p_Waist"],)
+                    size_obj_mail.p_Hips = (request.POST["p_Hips"],)
+                    size_obj_mail.p_Thigh = (request.POST["p_Thigh"],)
+                    size_obj_mail.p_Knee = (request.POST["p_Knee"],)
+                    size_obj_mail.p_Leg_Opening = (request.POST["p_LegOpening"],)
+                    size_obj_mail.p_Crotch_Or_Rise = (request.POST["p_Crotch"],)
+                    size_obj_mail.p_In_Seam = (request.POST["p_Seam"],)
+                    size_obj_mail.s_Shirt_lenght = (request.POST["s_ShirtLen"],)
+                    size_obj_mail.s_Sleeve_Length = (request.POST["s_Sleeve"],)
+                    size_obj_mails_Shoulders = (request.POST["s_Shoulders"],)
+                    size_obj_mail.s_Chest = (request.POST["s_Chest"],)
+                    size_obj_mail.s_Overarm = (request.POST["s_Overarm"],)
+                    size_obj_mail.s_Waistcoat_Length = (request.POST["Waistcoat"],)
+                    size_obj_mail.s_Bicep_Loose = (request.POST["s_Bicep"],)
+                    size_obj_mail.s_Front_Chest = (request.POST["s_FrontChest"],)
+                    size_obj_mail.s_Front_Stomach = (request.POST["s_Stomach"],)
+                    size_obj_mail.s_Front_Hips = (request.POST["s_Hips"],)
+                    size_obj_mail.s_Wrist = (request.POST["s_Wrist"],)
+                    size_obj_mail.s_Neck = (request.POST["s_Neck"],)
+                    size_obj_mail.save()
+                    messages.info(request, "Male Size is added Successfully!")
+                    return redirect("/profile")
 
 
 @login_required(login_url="/login")

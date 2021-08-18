@@ -25,9 +25,9 @@ urlpatterns = [
     path("signup", views.user_profile.signup, name="signup"),
     path("login", views.login, name="login"),
     path("logout", views.logout, name="logout"),
-    path("view_size/<int:s_id>&&<str:s_ge>", views.size.view_size, name="view_size"),
+    path("view_size/<int:s_id>", views.size.view_size, name="view_size"),
     path(
-        "update_size<int:s_id>/<str:s_ge>", views.size.update_size, name="update_size"
+        "update_size<int:s_id>/<int:s_ge>", views.size.update_size, name="update_size"
     ),
     path("saveaddress", views.address.SaveAddress, name="saveaddress"),
     path(

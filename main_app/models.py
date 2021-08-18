@@ -210,13 +210,8 @@ class for_gown(models.Model):
     arm_hole = models.FloatField()
 
 
-class MailSize(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    gender = models.CharField(
-        max_length=50,
-        null=True,
-    )
+class male_pantshirt(models.Model):
+    size_detail = models.ForeignKey(size_detail, null=True, on_delete=models.CASCADE)
     p_length = models.FloatField()
     p_Waist = models.FloatField()
     p_Hips = models.FloatField()
