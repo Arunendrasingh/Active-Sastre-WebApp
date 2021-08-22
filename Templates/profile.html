@@ -19,7 +19,8 @@
                 <h6 class="fs-5 mb-4">{{get_user.first_name}}  {{get_user.last_name}}</h6>
                 <h6 class="fs-5">+91 {{get_profile.phone}}</h6>
                 <h6 class="fs-5 mb-5">Email:{{get_user.email}}</h6>
-                <a href="#" data-bs-toggle="modal" data-bs-target="#Detail">Edit Details</a>
+                <a href="#" class="m-3" data-bs-toggle="modal" data-bs-target="#Detail">Edit Details</a>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#password">Change Password</a>
 
             </div>
             <div class="col-sm-6 pro-dtls" style="z-index: 0;">
@@ -50,7 +51,7 @@
     <!-- Modals Start -->
 
     <!-- User Details -->
-    <div class="modal pro-dtls fade" id="Detail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="DetailLabel" aria-hidden="true">
+    <div class="modal pro-dtls fade" id="Detail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="passwordLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -68,6 +69,32 @@
                         <input class="form-control my-2" type="email" name="email" id="Email" value="{{get_user.email}}">
                         <label for="Tel">Mobile Number</label>
                         <input class="form-control my-2" type="tel" name="mobile" id="Tel" value="{{get_profile.phone}}">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save
+                            Changes</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal pro-dtls fade" id="password" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="DetailLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="DetailLabel">Details</h5>
+                    <button type="submit" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="change_password/{{get_user.id}}" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <label for="FName">Old Password</label>
+                        <input class="form-control my-2" type="password" required name="oldpassword" id="oldpassword" >
+                        <label for="LName">New Password</label>
+                        <input class="form-control my-2" type="text" required name="newpassword" id="newpassword" >
+                        <label for="Email">Confirm New Password</label>
+                        <input class="form-control my-2" type="text" required name="conpassword" id="conpassword">
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save

@@ -1032,3 +1032,26 @@ def delete_feedback(request, r_id, o_id):
     order_obj.save()
     messages.info(request, "Your Feedback is Deleted Successfully!")
     return redirect(request.META.get("HTTP_REFERER"))
+
+
+@login_required(login_url="/login")
+def change_password(request, u_id):
+    if request.method == "POST":
+        user = auth.authenticate(
+            id=u_id,
+            username=request.user.username,
+            password=request.POST["oldpassword"],
+        )
+        if user is not None:
+            user_obj = User.objects.filter(id=u_id)[0]
+            if request.POST["newpassword"] == request.POST["conpassword"]:
+                user_obj.set_password(request.POST["newpassword"])
+                user_obj.save()
+                messages.info(request, "Password is changed successfully!")
+                return redirect("/profile")
+            else:
+                messages.info(request, "Both password is not same")
+                return redirect("/profile")
+        else:
+            messages.info(request, "Invalid Old Password!")
+            return redirect("/profile")

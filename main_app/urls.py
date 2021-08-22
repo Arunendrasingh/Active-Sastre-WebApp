@@ -18,6 +18,7 @@ urlpatterns = [
     path("add_to_wishlist/<int:p_id>", views.add_to_wishlist, name="Wishlist"),
     path("add_size", views.add_size, name="add_size"),
     path("delete_from/<int:w_id>", views.delete_from_wishlist, name="Wishlist"),
+    path("change_password/<int:u_id>", views.change_password, name="change_password"),
     path("delete/<int:r_id>/<int:o_id>", views.delete_feedback, name="delete_feedback"),
     path("wishlist", views.wishlist, name="Wishlist"),
     path("contact", views.contact, name="Contact Us"),
