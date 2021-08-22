@@ -21,19 +21,15 @@
                     <select class="form-select" aria-label="Default select example" required  name="address" id="Address">
                         {% for address in address %}
                             <option value="Name: {{address.name}}, Contact No: {{address.contact_no}},City: {{address.city}},House No:{{address.house_no}},Landmark:{{address.area_landmark}},State:{{address.state}},Pin: {{address.pin_code}},Order Date{{address.date_time}}" {% if forloop.first %} selected {% endif %}>
-                                {{address.name}}
+                                {{address.name|capfirst}}
                             </option>
                         {% endfor %}
                         </select>
                     <label class="fs-5" for="size">Size:</label>
                     <select class="form-select" aria-label="Default select example" required  name="size" id="size">
                         {% for size in size %}
-                            <option value="{{size.id}} {{size.gender}}">{{size.name}}</option>
+                            <option value="{{size.id}} {{size.gender}}">{{size.name|capfirst}}, For:- {{size.design_type|capfirst}}</option>
                             <!-- <input type="hidden" name="gender" value="{{size.gender}}"> -->
-                        {% endfor %}
-                        {% for size1 in malesize %}
-                        <!-- <input type="hidden" name="gender" value="{{size1.gender}}"> -->
-                            <option value="{{size1.id}} {{size1.gender}}">{{size1.name}}</option>
                         {% endfor %}
                     </select>
                     <br>

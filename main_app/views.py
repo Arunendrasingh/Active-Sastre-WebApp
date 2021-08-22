@@ -81,16 +81,13 @@ def about(request):
 def checkout(request, p_id):
     user_obj = Profile.objects.get(id=request.user.id)
     address_obj = Address.objects.filter(user=user_obj.id)
-
-    size_obj = Femail_size_Chart.objects.filter(user=user_obj.id)
     product_obj = Product_detail.objects.filter(id=p_id)[0]
-    get_size_mail = male_pantshirt.objects.filter(user=request.user)
+    get_size = size_detail.objects.filter(user=request.user)
     cart_obj = MyCart.objects.filter(product_id=p_id)[0]
     main_info = {
         "address": address_obj,
-        "size": size_obj,
         "product_obj": product_obj,
-        "malesize": get_size_mail,
+        "size": get_size,
         "cart_obj": cart_obj,
     }
     return render(request, "checkout.html", main_info)
@@ -105,116 +102,179 @@ def place_order(request):
         value = size.split()
         prod_id = request.POST["prod_id"]
         prod_name = request.POST["prod_name"]
-        # gender = request.POST['gender']
         prod_price = request.POST["prod_price"]
         total_product = request.POST["product_num"]
         total_price = request.POST["total_price"]
         user_name = request.POST["user_name"]
         user = request.user.first_name + "  " + request.user.last_name
+        size_obj = size_detail.objects.filter(id=value[0])[0]
         if value[1] == "female":
-            size_obj = Femail_size_Chart.objects.filter(id=int(value[0]))[0]
-            size_name = size_obj.name
-            size_detail = (
-                "Shoulder:-"
-                + str(size_obj.shoulder)
-                + ", Shoulder Full Lenght:-"
-                + str(size_obj.shoulder_full_lenght)
-                + ", Front Neck Depth:-"
-                + str(size_obj.front_neck_depth)
-                + ", Back Neck Depth:-"
-                + str(size_obj.back_neck_depth)
-                + ", Sleeve Length:-"
-                + str(size_obj.sleeve_length)
-                + ", Sleeve Around:-"
-                + str(size_obj.sleev_around)
-                + ", Armhole(around):-"
-                + str(size_obj.arm_hole)
-                + ", Dress Length:-"
-                + str(size_obj.gown_length)
-                + ", Neck Line:-"
-                + str(size_obj.neck_line)
-                + ", Upper Bust:-"
-                + str(size_obj.upper_bust)
-                + ", Chest/Bust:-"
-                + str(size_obj.chest)
-                + ", Stomach:-"
-                + str(size_obj.stomach)
-                + ", Hip:-"
-                + str(size_obj.hips)
-                + ", Thigh:-"
-                + str(size_obj.thigh)
-                + ", Chest Around:-"
-                + str(size_obj.chest)
-                + ", Waist:-"
-                + str(size_obj.waist)
-                + ", Blouse Length:-"
-                + str(size_obj.blouse_length)
-                + ", Knee:-"
-                + str(size_obj.knee)
-                + ", Calf:-"
-                + str(size_obj.calf)
-                + ", Ankel Hem:-"
-                + str(size_obj.arm_hole)
-                + ", Upper Chest:-"
-                + str(size_obj.chest)
-                + ", Neck to Solider:-"
-                + str(size_obj.neck_to_solider)
-                + ", Gown Length:-"
-                + str(size_obj.gown_length)
-                + ", Around Bust:-"
-                + str(size_obj.around_bust)
-                + ", upper_waist:-"
-                + str(size_obj.upper_waist)
-                + ", Waist to Ankel Length:-"
-                + str(size_obj.waist_to_ankel_length)
-                + ", Full Body Lenght:-"
-                + str(size_obj.full_body_lenght)
-            )
+            if size_obj.design_type == "blouse":
+                design_det = blouse.objects.filter(size_detail=size_obj)[0]
+                size_data = (
+                    "Blouse Front"
+                    + "Shoulder:-"
+                    + str(design_det.shoulders)
+                    + ", Shoulder Full Lenght:-"
+                    + str(design_det.shouldersfull_lenght)
+                    + ", Front Neck Depth:-"
+                    + str(design_det.front_neck_depth)
+                    + ", Chest (Around):-"
+                    + str(design_det.chest_around)
+                    + ", Waist (Around):-"
+                    + str(design_det.waist_around)
+                    + "Blouse Back"
+                    + ", Back Neck Depth:-"
+                    + str(design_det.back_neck_depth)
+                    + ", Blouse Length:-"
+                    + str(design_det.blouse_length)
+                    + ", Sleeve Length:-"
+                    + str(design_det.sleeve_length)
+                    + ", Sleeve Around:-"
+                    + str(design_det.sleeve_around)
+                    + ", Armhole(around):-"
+                    + str(design_det.armhole_around)
+                )
+            elif size_obj.design_type == "kurti":
+                design_det = kurti.objects.filter(size_detail=size_obj)[0]
+                size_data = (
+                    "Upper Side"
+                    + "Dress Length:-"
+                    + str(design_det.dress_length)
+                    + ", Sleeve Length:-"
+                    + str(design_det.sleev_length)
+                    + ", Neckline:-"
+                    + str(design_det.neckline)
+                    + ", Upper Bust:-"
+                    + str(design_det.upper_bust)
+                    + ", Chest/Bust:-"
+                    + str(design_det.chest_bust)
+                    + ", Stomach:-"
+                    + str(design_det.stomach)
+                    + ", Hips:-"
+                    + str(design_det.hip)
+                    + ", Shoulder:-"
+                    + str(design_det.shoulder)
+                    + ", Arm Hole:-"
+                    + str(design_det.arm_hole)
+                    + ", Waist:-"
+                    + str(design_det.waist)
+                    + "Lower Side"
+                    + ", Thigh:-"
+                    + str(design_det.back_neck_depth)
+                    + ", Knee:-"
+                    + str(design_det.blouse_length)
+                    + ", Calf:-"
+                    + str(design_det.sleeve_length)
+                    + ", Ankel Hem:-"
+                    + str(design_det.sleeve_around)
+                )
+            elif size_obj.design_type == "lahenga":
+                design_det = for_lahenga.objects.filter(size_detail=size_obj)[0]
+                size_data = (
+                    "Blouse Measurement"
+                    + "Front Neck Depth:-"
+                    + str(design_det.front_neck_depth)
+                    + ", Around Bust:-"
+                    + str(design_det.around_bust)
+                    + ", Neck to Shoulder:-"
+                    + str(design_det.neck_to_shoulder)
+                    + ", Upper Waist:-"
+                    + str(design_det.upper_waist)
+                    + ", Blouse Length:-"
+                    + str(design_det.blouse_length)
+                    + ", Shoulder:-"
+                    + str(design_det.shoulder)
+                    + ", Back Neck Depth:-"
+                    + str(design_det.back_neck_depth)
+                    + ", Shoulder:-"
+                    + str(design_det.shoulder)
+                    + ", Around Arm Hole:-"
+                    + str(design_det.around_armholes)
+                    + ", Sleeve Length:-"
+                    + str(design_det.sleeve_length)
+                    + "Lahenga Measurement"
+                    + ", Waist:-"
+                    + str(design_det.waist)
+                    + ", Hips:-"
+                    + str(design_det.hips)
+                    + ", Waist to Ankel Length:-"
+                    + str(design_det.waist_to_ankel)
+                    + ", Full Body:-"
+                    + str(design_det.full_body)
+                )
+            elif size_obj.design_type == "gown":
+                design_det = for_gown.objects.filter(size_detail=size_obj)[0]
+                size_data = (
+                    "All Measurement"
+                    + ", Gown Length:-"
+                    + str(design_det.gown_length)
+                    + ", Upper Chest:-"
+                    + str(design_det.upper_chest)
+                    + ", Chest:-"
+                    + str(design_det.chest)
+                    + ", Waist:-"
+                    + str(design_det.waist)
+                    + ", Stomach:-"
+                    + str(design_det.stomach)
+                    + ", Hips:-"
+                    + str(design_det.hips)
+                    + ", Shoulder:-"
+                    + str(design_det.shoulder)
+                    + "Front Neck Depth:-"
+                    + str(design_det.front_neck_depth)
+                    + ", Sleeve Length:-"
+                    + str(design_det.sleeve_length)
+                    + ", Sleeve Round:-"
+                    + str(design_det.sleeve_round)
+                    + ",Arm Hole:-"
+                    + str(design_det.arm_hole)
+                )
         else:
-            size_obj = male_pantshirt.objects.filter(id=int(value[0]))[0]
-            size_name = size_obj.name
-            size_detail = (
-                "Paint Length:-"
-                + str(size_obj.p_length)
-                + ", Paint Waist:-"
-                + str(size_obj.p_Waist)
-                + ", Paint Hips:-"
-                + str(size_obj.p_Hips)
-                + ", Paint Thigh:-"
-                + str(size_obj.p_Thigh)
-                + ", Knee:-"
-                + str(size_obj.p_Knee)
-                + ", Leg Opening:-"
-                + str(size_obj.p_Leg_Opening)
-                + ", Crotch/Rise:-"
-                + str(size_obj.p_Crotch_Or_Rise)
-                + ", In-Seam:-"
-                + str(size_obj.p_In_Seam)
-                + ", Shirt Length:-"
-                + str(size_obj.s_Shirt_lenght)
-                + ", Sleeve Length:-"
-                + str(size_obj.s_Sleeve_Length)
-                + ", Shoulders:-"
-                + str(size_obj.s_Shoulders)
-                + ", Chest:-"
-                + str(size_obj.s_Chest)
-                + ", Overarm:-"
-                + str(size_obj.s_Overarm)
-                + ", Waistcoat Length:-"
-                + str(size_obj.s_Waistcoat_Length)
-                + ", Bicep(Loose):-"
-                + str(size_obj.s_Bicep_Loose)
-                + ", Chest:-"
-                + str(size_obj.s_Front_Chest)
-                + ", Stomach:-"
-                + str(size_obj.s_Front_Stomach)
-                + ", Front - Hip:-"
-                + str(size_obj.s_Front_Hips)
-                + ", Wrist:-"
-                + str(size_obj.s_Wrist)
-                + ", Neck:-"
-                + str(size_obj.s_Neck)
-            )
+            if size_obj.design_type == "pantshirt":
+                design_det = male_pantshirt.objects.filter(size_detail=size_obj)[0]
+                size_data = (
+                    "Paint Length:-"
+                    + str(design_det.p_length)
+                    + ", Paint Waist:-"
+                    + str(design_det.p_Waist)
+                    + ", Paint Hips:-"
+                    + str(design_det.p_Hips)
+                    + ", Paint Thigh:-"
+                    + str(design_det.p_Thigh)
+                    + ", Knee:-"
+                    + str(design_det.p_Knee)
+                    + ", Leg Opening:-"
+                    + str(design_det.p_Leg_Opening)
+                    + ", Crotch/Rise:-"
+                    + str(design_det.p_Crotch_Or_Rise)
+                    + ", In-Seam:-"
+                    + str(design_det.p_In_Seam)
+                    + ", Shirt Length:-"
+                    + str(design_det.s_Shirt_lenght)
+                    + ", Sleeve Length:-"
+                    + str(design_det.s_Sleeve_Length)
+                    + ", Shoulders:-"
+                    + str(design_det.s_Shoulders)
+                    + ", Chest:-"
+                    + str(design_det.s_Chest)
+                    + ", Overarm:-"
+                    + str(design_det.s_Overarm)
+                    + ", Waistcoat Length:-"
+                    + str(design_det.s_Waistcoat_Length)
+                    + ", Bicep(Loose):-"
+                    + str(design_det.s_Bicep_Loose)
+                    + ", Chest:-"
+                    + str(design_det.s_Front_Chest)
+                    + ", Stomach:-"
+                    + str(design_det.s_Front_Stomach)
+                    + ", Front - Hip:-"
+                    + str(design_det.s_Front_Hips)
+                    + ", Wrist:-"
+                    + str(design_det.s_Wrist)
+                    + ", Neck:-"
+                    + str(design_det.s_Neck)
+                )
 
         obj_order = Oreder_Detail(
             user_id=request.user.id,
@@ -225,8 +285,8 @@ def place_order(request):
             Product_quantity=total_product,
             Pro_price=prod_price,
             size_id=int(value[0]),
-            size_name=size_name,
-            size_detail=size_detail,
+            size_name=(size_obj.design_type).upper(),
+            size_detail=size_data,
             total_price=total_price,
             order_status="pending",
         )
@@ -728,6 +788,8 @@ class size:
                         size_obj_mail.save()
                         messages.info(request, "Male Size is added Successfully!")
                     return redirect("/profile")
+        else:
+            return redirect("/profile")
 
     @login_required(login_url="/login")
     def delete_size(request, id, g_id):

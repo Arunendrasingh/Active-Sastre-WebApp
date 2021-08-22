@@ -36,7 +36,7 @@
                                 <form action="/update_size{{sizechart.id}}/{{chartsize.gender}}" method="POST">
                                     {% csrf_token %}
                                     <h6 class="fs-5">Name:</h6>
-                                    <input type="text" id="name" value="{{sizechart.name}}" name="name" required>
+                                    <input type="text" id="name" value="{{sizechart.name}}" name="name" disabled>
                                     <input type="hidden" id="gender" name="gender" value="male" required>
                                     <input type="hidden" id="design" value="pantshirt" name="design" required>
                                     <div class="row">
@@ -376,7 +376,7 @@
                         <form action="/update_size{{sizechart.id}}/{{chartsize.id}}" method="POST">
                             {% csrf_token %}
                             <h6 class="fs-5">Name:</h6>
-                            <input type="text" id="name" name="name"  value="{{sizechart.name}}" required>
+                            <input type="text" id="name" name="name"  value="{{sizechart.name}}" disabled>
                             <input type="hidden" id="gender" name="gender" value="female" required>
                             <input type="hidden" id="design" name="design" value="blouse" required>
                             <h6 class="fs-5"> measures:</h6>
@@ -549,7 +549,7 @@
                         <form action="/update_size{{sizechart.id}}/{{chartsize.id}}" method="POST">
                             {% csrf_token %}
                             <h6 class="fs-5">Name:</h6>
-                            <input type="text" id="name" name="name" value="{{sizechart.name}}" required>
+                            <input type="text" id="name" name="name" value="{{sizechart.name}}" disabled>
                             <input type="hidden" id="gender" name="gender" value="female" required>
                             <input type="hidden" id="design" name="design" value="kurti" required>
                             <h6 class="fs-5"> measures:</h6>
@@ -782,7 +782,7 @@
                         <form action="/update_size{{sizechart.id}}/{{chartsize.id}}" method="POST">
                             {% csrf_token %}
                             <h6 class="fs-5">Name:</h6>
-                            <input type="text" id="name" name="name" value="{{sizechart.name}}" required>
+                            <input type="text" id="name" name="name" value="{{sizechart.name}}" disabled>
                             <input type="hidden" id="gender" name="gender" value="female" required>
                             <input type="hidden" id="design" name="design" value="lahenga" required>
                             <h6 class="fs-5"> measures:</h6>
@@ -998,7 +998,7 @@
                         <form action="/update_size{{sizechart.id}}/{{chartsize.id}}" method="POST">
                             {% csrf_token %}
                             <h6 class="fs-5">Name:</h6>
-                            <input type="text" id="name" name="name" value="{{sizechart.name}}" required>
+                            <input type="text" id="name" name="name" value="{{sizechart.name}}" disabled>
                             <input type="hidden" id="gender" name="gender" value="female" required>
                             <input type="hidden" id="design" name="design" value="gown" required>
                             <h6 class="fs-5"> measures:</h6>
