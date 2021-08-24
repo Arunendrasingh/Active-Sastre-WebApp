@@ -18,14 +18,17 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 
-
 admin.site.site_header = "Active Sastre"
 admin.site.site_title = "Active Sastre"
 admin.site.site_url = "Active Sastre"
 admin.site.index_title = " Welcome To Active Sastre Admin"
 
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path("", include('main_app.urls')),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns = (
+    [
+        path("admin/", admin.site.urls),
+        path("", include("main_app.urls")),
+    ]
+    + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+)

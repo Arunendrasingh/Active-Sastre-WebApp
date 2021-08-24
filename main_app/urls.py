@@ -49,4 +49,15 @@ urlpatterns = [
     ),
     path("add_to_cart/<int:pid>", views.add_to_cart, name="add_to_cart"),
     path("your_order", views.your_order, name="your Order"),
+    path("reset_password", views.reset_password, name="Reset Password"),
+    path(
+        "password_reset_confirm",
+        views.password_reset_confirm,
+        name="Password Reset Confirm",
+    ),
+    path(
+        "password_reset_done/<str:u_id>",
+        views.password_reset_done,
+        name="Password Reset Done",
+    ),
 ]

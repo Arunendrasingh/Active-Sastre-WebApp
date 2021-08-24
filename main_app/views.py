@@ -1,4 +1,5 @@
 from typing import OrderedDict
+from django.http.response import HttpResponseRedirect
 
 # from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
@@ -464,17 +465,18 @@ class user_profile:
         if request.method == "POST":
             first_name = request.POST["fname"].capitalize()
             last_name = request.POST["lname"].capitalize()
-            # user_name = request.POST['username']
             phone = request.POST["phone"]
             user_email = request.POST["email"]
             user_password1 = request.POST["pass"]
             user_password2 = request.POST["conpass"]
-            # pro_img = request.FILES['prof_img']
             if user_password1 == user_password2:
                 if User.objects.filter(
                     Q(username__iexact=user_email) | Q(email__iexact=user_email)
                 ).exists():
-                    messages.success(request, "User Name Or Email  alredy registerd")
+                    messages.success(request, "User Name Or Email  already registerd")
+                    return redirect("/signup")
+                elif Profile.objects.filter(phone=phone).exists():
+                    messages.success(request, "Phone number is already registerd")
                     return redirect("/signup")
                 else:
                     user = User.objects.create_user(
@@ -485,6 +487,10 @@ class user_profile:
                         password=user_password2,
                     )
                     user.save()
+                    user_profile = Profile.objects.get(user=user)
+                    user_profile.phone = phone
+                    # user_profile.image = pro_img
+                    user_profile.save()
                     subject = "welcome to Active Sastre"
                     message = (
                         f"Hi {first_name}, thank you for registering in Active Sastre."
@@ -494,10 +500,6 @@ class user_profile:
                         user_email,
                     ]
                     send_mail(subject, message, email_from, recipient_list)
-                    user_profile = Profile.objects.get(user=user)
-                    user_profile.phone = phone
-                    # user_profile.image = pro_img
-                    user_profile.save()
                     messages.success(request, "Yor are registerd successfully")
                     return redirect("/login")
             else:
@@ -511,17 +513,11 @@ class user_profile:
         if request.method == "POST":
             fname = request.POST["fname"]
             lname = request.POST["lname"]
-            email = request.POST["email"]
-            phone = request.POST["mobile"]
             user_pro = User.objects.get(id=id)
-            get_profile = Profile.objects.get(user=user_pro)
+            # get_profile = Profile.objects.get(user=user_pro)
             user_pro.first_name = fname
             user_pro.last_name = lname
-            user_pro.email = email
-            # user_pro.username = email
             user_pro.save()
-            get_profile.phone = phone
-            get_profile.save()
             messages.success(request, "Your Profile Is saved successfully!")
             return redirect("/profile")
         else:
@@ -1050,8 +1046,56 @@ def change_password(request, u_id):
                 messages.info(request, "Password is changed successfully!")
                 return redirect("/profile")
             else:
-                messages.info(request, "Both password is not same")
+                messages.info(request, "Both password is not Matched")
                 return redirect("/profile")
         else:
             messages.info(request, "Invalid Old Password!")
             return redirect("/profile")
+
+
+def reset_password(request):
+    return render(request, "password/password_reset.html")
+
+
+def password_reset_confirm(request):
+    if request.method == "POST":
+        user_email = request.POST["email"]
+        phone = request.POST["phone"]
+        if User.objects.filter(
+            Q(username__iexact=user_email) | Q(email__iexact=user_email)
+        ).exists():
+            user_data = User.objects.filter(
+                Q(username__iexact=user_email) | Q(email__iexact=user_email)
+            )[0]
+            if Profile.objects.filter(user=user_data, phone=phone).exists():
+                user_data = User.objects.filter(
+                    Q(username__iexact=user_email) | Q(email__iexact=user_email)
+                )[0]
+                return redirect("/password_reset_done/" + str(user_data.id))
+            else:
+                messages.info(request, "Phone is not exists")
+                return redirect("/reset_password")
+        else:
+            messages.info(request, "Username Or Email is not exists")
+            return redirect("/reset_password")
+
+
+def password_reset_done(request, u_id):
+    if request.method == "POST":
+        user_obj = User.objects.filter(id=u_id)[0]
+        if request.POST["newpassword"] == request.POST["conpassword"]:
+            user_obj.set_password(request.POST["newpassword"])
+            user_obj.save()
+            messages.info(request, "Password is changed successfully!")
+            return redirect("/profile")
+        else:
+            messages.info(request, "Both password is not Matched")
+            return redirect("/profile")
+    else:
+        if User.objects.filter(id=u_id).exists():
+            user_obj = User.objects.filter(id=u_id)[0]
+            return render(
+                request, "password/password_reset_done.html", {"user": user_obj}
+            )
+        else:
+            return redirect("/login")
