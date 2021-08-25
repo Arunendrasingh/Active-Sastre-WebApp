@@ -489,7 +489,6 @@ class user_profile:
                     user.save()
                     user_profile = Profile.objects.get(user=user)
                     user_profile.phone = phone
-                    # user_profile.image = pro_img
                     user_profile.save()
                     subject = "welcome to Active Sastre"
                     message = (
