@@ -22,9 +22,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "u2a&ox#qrrky#v*q-k@rzmi#ytvib1&fbcb^v8i7uhgwzub6_a"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["143.244.143.175", "activesastre.com", "www.activesastre.com"]
+# ALLOWED_HOSTS = ["143.244.143.175", "activesastre.com", "www.activesastre.com"]
 
 
 # Application definition
@@ -73,21 +73,21 @@ DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "OPTIONS": {
-            "read_default_file": "/etc/mysql/my.cnf",
-        },
-    }
-}
-
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
+#     "default": {
+#         "ENGINE": "django.db.backends.mysql",
+#         "OPTIONS": {
+#             "read_default_file": "/etc/mysql/my.cnf",
+#         },
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
