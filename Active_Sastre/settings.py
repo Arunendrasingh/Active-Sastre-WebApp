@@ -83,9 +83,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 # }
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -111,8 +111,8 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = "activesastre@gmail.com"
-EMAIL_HOST_PASSWORD = "saurabh@123"
+EMAIL_HOST_USER = "aman.singh.20e6@gmail.com"
+EMAIL_HOST_PASSWORD = "aman@singh@1791999"
 
 
 # Internationalization

@@ -1,3 +1,14 @@
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template.loader import render_to_string
+from .tokens import account_activation_token
+from django.contrib.auth.models import User
+from django.core.mail import EmailMessage
+
+
 from typing import OrderedDict
 from django.http.response import HttpResponseRedirect
 
@@ -460,7 +471,23 @@ def contact(request):
     return render(request, "contact.html")
 
 
+def activate(request, uidb64, token):
+        try:
+            uid = force_text(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(pk=uid)
+        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+        if user is not None and account_activation_token.check_token(user, token):
+            user.is_active = True
+            user.save()
+            # login(request, user)
+            messages.success(request, 'Thank you for your email confirmation. Now you can login your account.')
+            return redirect('/')
+            # return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+        else:
+            return HttpResponse('Activation link is invalid!')
 class user_profile:
+
     def signup(request):
         if request.method == "POST":
             first_name = request.POST["fname"].capitalize()
@@ -484,21 +511,38 @@ class user_profile:
                         first_name=first_name,
                         last_name=last_name,
                         email=user_email,
+                        is_active = False,
                         password=user_password2,
                     )
                     user.save()
                     user_profile = Profile.objects.get(user=user)
                     user_profile.phone = phone
                     user_profile.save()
-                    subject = "welcome to Active Sastre"
-                    message = (
-                        f"Hi {first_name}, thank you for registering in Active Sastre."
+
+                    """Code for sending verification link to user"""
+                    current_site = get_current_site(request)
+                    mail_subject = 'Activate your blog account.'
+                    message = render_to_string('acc_active_email.html', {
+                        'user': user,
+                        'domain': current_site.domain,
+                        'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+                        'token':account_activation_token.make_token(user),
+                    })
+                    to_email = user_email
+                    email = EmailMessage(
+                                mail_subject, message, to=[to_email]
                     )
-                    email_from = settings.EMAIL_HOST_USER
-                    recipient_list = [
-                        user_email,
-                    ]
-                    send_mail(subject, message, email_from, recipient_list)
+                    email.send()
+                    return HttpResponse('Please confirm your email address to complete the registration')
+                    # subject = "welcome to Active Sastre"
+                    # message = (
+                    #     f"Hi {first_name}, thank you for registering in Active Sastre."
+                    # )
+                    # email_from = settings.EMAIL_HOST_USER
+                    # recipient_list = [
+                    #     user_email,
+                    # ]
+                    # send_mail(subject, message, email_from, recipient_list)
                     messages.success(request, "Yor are registerd successfully")
                     return redirect("/login")
             else:

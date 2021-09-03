@@ -1,4 +1,5 @@
 from django.urls import path
+from django.conf.urls import url
 
 # from django.urls.resolvers import URLPattern
 from . import views
@@ -60,4 +61,8 @@ urlpatterns = [
         views.password_reset_done,
         name="Password Reset Done",
     ),
+    # url(r'^$', views.home, name='home'),
+    # url(r'^signup/$', views.signup, name='signup'),
+    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,32})/$',
+        views.activate, name='activate'),
 ]
