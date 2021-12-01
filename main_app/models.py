@@ -1,40 +1,47 @@
-from typing import cast
-from django.db import models
-from django.db.models.aggregates import Max
-import uuid
-from django.db.models.base import Model
-from django.db.models.deletion import CASCADE
-
-# from django.db.models.fields import TimeField
-from django.db.models.fields.related import ForeignKey
-from django.contrib.auth.models import User
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from decimal import Decimal
-
+from django.db import models
+from django.dispatch import receiver
+# from django.db.models.base import Model
+# from django.db.models.aggregates import Max
+from django.contrib.auth.models import User
+from django.db.models.deletion import CASCADE
+from django.db.models.signals import post_save
+# from django.db.models.fields import TimeField
+# from django.db.models.fields import DateTimeField
+from django.dispatch.dispatcher import NO_RECEIVERS
+# from django.db.models.fields.related import ForeignKey
 # from django.utils.html import mark_safe
 from django.core.validators import MinValueValidator, integer_validator
-from django.dispatch.dispatcher import NO_RECEIVERS
+
+
 from django.utils import tree
 
 # Create your models here.
 
+class category(models.Model):
+    name = models.CharField(max_length=100, default="", null=True)
+    img = models.ImageField(upload_to='product_categery')
+    description = models.TextField()
+    datetime = models.DateTimeField(auto_now_add=True, null=True)
+    def __str__(self) -> str:
+        return self.name
 
 class Product_detail(models.Model):
+    category = models.ForeignKey(category,default="", null=True ,on_delete=models.CASCADE)
     name = models.CharField((u"Product Name"), max_length=200)
     price = models.DecimalField(
         (u"Product Price"),
         decimal_places=2,
         null=True,
         max_digits=20,
-        validators=[MinValueValidator(Decimal("0.01"))],
+        validators=[MinValueValidator(Decimal("0.00"))],
     )
     new_price = models.DecimalField(
         (u"Aftr discount Price"),
         decimal_places=2,
-        null=True,
+        default=0,
         max_digits=20,
-        validators=[MinValueValidator(Decimal("0.01"))],
+        validators=[MinValueValidator(Decimal("0.00"))],
     )
     discount = models.IntegerField((u'Discount On Product in "%"'), null=True)
     total_num = models.IntegerField((u"Total Product"), null=True)
@@ -46,6 +53,12 @@ class Product_detail(models.Model):
     design_pattern = models.CharField(max_length=200)
     color = models.CharField(max_length=200)
     date_time = models.DateTimeField(auto_now_add=True, null=True)
+
+
+    def save(self, *args, **kwargs):
+        if self.price:
+            self.new_price = self.price - (self.price * self.discount) / 100
+            super(Product_detail, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.name
@@ -106,6 +119,68 @@ class Profile(models.Model):
     def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
 
+class Referral(models.Model):
+    user = models.OneToOneField(User,null=True, default=" ", on_delete=models.CASCADE)
+    your_referral_id = models.CharField(null=True, max_length=150)
+    is_shared = models.BooleanField(default=False)
+    referral_id = models.CharField(max_length=150, null=True)
+    share_by = models.IntegerField(null=True)
+    is_applied = models.BooleanField(default=False)
+    is_used = models.BooleanField(default=False)
+    total_active_coin = models.DecimalField(
+        decimal_places=2,
+        default=0,
+        max_digits=20,
+        validators=[MinValueValidator(Decimal("0.00"))],
+    )
+    used_time = models.IntegerField(default=0)
+
+    @receiver(post_save, sender=User)
+    def create_user_referral(sender, instance, created, **kwargs):
+        if created:
+            Referral.objects.create(user=instance)
+        else:
+            Referral.objects.update_or_create(user=instance)
+
+    def __str__(self) -> str:
+        return self.user.first_name + " " + self.user.last_name
+
+    @receiver(post_save, sender=User)
+    def save_user_referral(sender, instance, **kwargs):
+        instance.referral.save()
+
+
+class Bonus(models.Model):
+    user = models.ForeignKey(User, null=True, default=" ", on_delete=models.CASCADE)
+    product_detail = models.IntegerField(null=True)
+    order_detail = models.IntegerField(null=True)
+    total_order = models.DecimalField(
+        decimal_places=2,
+        default=0,
+        max_digits=20,
+        validators=[MinValueValidator(Decimal("0.00"))],
+    )
+    bonus_price = models.DecimalField(
+        decimal_places=2,
+        default=0,
+        max_digits=20,
+        validators=[MinValueValidator(Decimal("0.00"))],
+    )
+    bonus_on_product = models.CharField((u'Bonus On Product in (%)'), default="", max_length=10)
+    date_of_order = models.DateTimeField(auto_now_add=True, null=True)
+    date_of_delivery = models.DateTimeField(null=True)
+    bonus_referr_to = models.IntegerField(null=True)
+    delivery_status = models.BooleanField(default=False)
+    is_added = models.BooleanField(default=False)
+    total_bonus = models.DecimalField(
+        decimal_places=2,
+        default=0,
+        max_digits=20,
+        validators=[MinValueValidator(Decimal("0.00"))],
+    )
+
+    def __str__(self) -> str:
+        return self.user.first_name + " " + self.user.last_name
 
 class Address(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -289,7 +364,7 @@ class Oreder_Detail(models.Model):
     Product_quantity = models.IntegerField((u"Product Quantity"), null=True)
     Pro_price = models.DecimalField(
         (u"Product Price"),
-        null=True,
+        default=0,
         decimal_places=2,
         max_digits=20,
         validators=[MinValueValidator(Decimal("0.01"))],
@@ -305,6 +380,8 @@ class Oreder_Detail(models.Model):
         max_digits=20,
         validators=[MinValueValidator(Decimal("0.01"))],
     )
+    # Referal Status
+    refral_status = models.BooleanField(default=False)
     # Status Of Product
     order_status = models.CharField((u"Order Status"), null=True, max_length=100)
     status = models.BooleanField((u"Delivered Or Not"), default=False)
@@ -312,6 +389,14 @@ class Oreder_Detail(models.Model):
 
     def __str__(self) -> str:
         return str(self.id) + " Ordered Product Name:-  " + self.pro_name
+
+    def save(self, *args, **kwargs):
+        if self.status:
+            self.order_status = "Delivered"
+            super(Oreder_Detail, self).save(*args, **kwargs)
+        else:
+            self.order_status = "Pending"
+            super(Oreder_Detail, self).save(*args, **kwargs)
 
 
 class user_feedback(models.Model):

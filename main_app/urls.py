@@ -1,5 +1,6 @@
 from django.urls import path
 from django.conf.urls import url
+from django.contrib.auth import views as auth_views
 
 # from django.urls.resolvers import URLPattern
 from . import views
@@ -8,28 +9,33 @@ from . import views
 
 urlpatterns = [
     path("", views.index, name="First page"),
-    path("About", views.about, name="About Us"),
-    path("cart", views.cart, name="Cart"),
-    path("checkout/<int:p_id>", views.checkout, name="Checkout"),
-    path("product/<int:pid>", views.product, name="Product"),
-    path("profile", views.profile, name="Profile"),
-    path("all_product", views.all_product, name="all_product"),
-    path("incresequantity/<int:cid>", views.incresequantity, name="incresequantity"),
-    path("decresequantity/<int:cid>", views.decresequantity, name="decresequantity"),
-    path("add_to_wishlist/<int:p_id>", views.add_to_wishlist, name="Wishlist"),
-    path("add_size", views.add_size, name="add_size"),
-    path("delete_from/<int:w_id>", views.delete_from_wishlist, name="Wishlist"),
-    path("change_password/<int:u_id>", views.change_password, name="change_password"),
-    path("delete/<int:r_id>/<int:o_id>", views.delete_feedback, name="delete_feedback"),
-    path("wishlist", views.wishlist, name="Wishlist"),
-    path("contact", views.contact, name="Contact Us"),
-    path("place_order", views.place_order, name="place_order"),
+    # URLS for signup/login and logout
     path("signup", views.user_profile.signup, name="signup"),
     path("login", views.login, name="login"),
     path("logout", views.logout, name="logout"),
+    # URLS Related to Profile
+    path("profile", views.profile, name="Profile"),
+    path("change_password/<int:u_id>", views.change_password, name="change_password"),
+    path("add_size", views.add_size, name="add_size"),
+    path("About", views.about, name="About Us"),
+    path("cart", views.cart, name="Cart"),
+    path("wishlist", views.wishlist, name="Wishlist"),
+    path("checkout/<int:p_id>", views.checkout, name="Checkout"),
+    path("product/<int:pid>", views.product, name="Product"),
+    path("add_to_wishlist/<int:p_id>", views.add_to_wishlist, name="Wishlist"),
+    path("incresequantity/<int:cid>", views.incresequantity, name="incresequantity"),
+    path("decresequantity/<int:cid>", views.decresequantity, name="decresequantity"),
+    path("delete_from/<int:w_id>", views.delete_from_wishlist, name="Wishlist"),
+    path("delete/<int:r_id>/<int:o_id>", views.delete_feedback, name="delete_feedback"),
+    # URL for All Product View
+    path("all_product", views.all_product, name="all_product"),
+    # path("all_product/<int:cat_id>", views.all_product, name="all_product"),
+    # URLs for basik need
+    path("contact", views.contact, name="Contact Us"),
+    path("place_order", views.place_order, name="place_order"),
     path("view_size/<int:s_id>", views.size.view_size, name="view_size"),
     path(
-        "update_size<int:s_id>/<int:s_ge>", views.size.update_size, name="update_size"
+        "update_size/<int:s_id>/<int:s_ge>", views.size.update_size, name="update_size"
     ),
     path("saveaddress", views.address.SaveAddress, name="saveaddress"),
     path(
@@ -50,19 +56,14 @@ urlpatterns = [
     ),
     path("add_to_cart/<int:pid>", views.add_to_cart, name="add_to_cart"),
     path("your_order", views.your_order, name="your Order"),
-    path("reset_password", views.reset_password, name="Reset Password"),
-    path(
-        "password_reset_confirm",
-        views.password_reset_confirm,
-        name="Password Reset Confirm",
-    ),
-    path(
-        "password_reset_done/<str:u_id>",
-        views.password_reset_done,
-        name="Password Reset Done",
-    ),
-    # url(r'^$', views.home, name='home'),
-    # url(r'^signup/$', views.signup, name='signup'),
-    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,32})/$',
-        views.activate, name='activate'),
+
+    # URLS For Password Resting in case of you forgate you
+    path("password_reset", views.password_reset_request, name="password_reset"),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='password/password_reset_done.html'), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name="password/password_reset_confirm.html"), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='password/password_reset_complete.html'), name='password_reset_complete'),  
+    path('activate/<uidb64>/<token>', views.activate, name='activate'),
+
+    # URLS for referral
+    path("bonus", views.your_bonus, name="your_bonus"),
 ]

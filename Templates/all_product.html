@@ -1,28 +1,67 @@
-{% extends "base.html" %} {% load static %} {% block title %}Active Sastre-All Product {% endblock title %} {% block active1 %} active {% endblock active1 %} {% block main_body %}
+{% extends "base.html" %} {% load static %} {% block title %}Active Sastre-All Product {% endblock title %} {% block active4 %} active {% endblock active4 %} {% block main_body %}
 <section>
     <div class="header">
         <h1>All Product</h1>
     </div>
 </section>
 <section>
-    <div class="row row-cols-1 row-cols-md-4 g-4 m-3">
-        <!-- Adding Jinja Template -->
-        {% for product in all_product %}
-        {% if product.total_num != 0 %}
-        <div class="col">
-            <a href="/product/{{product.id}}">
-                <div class="card h-100">
-                    <img src="/media/{{product.thumbnail_image}}" class="card-img-top" style="height: 300px;" alt="product">
-                    <div class="card-body">
-                        <h4 class="card-title"><b>{{product.name}}</b></h4>
-                        <p class="card-text" style="color: gray;">{{product.design_pattern}}</p>
-                        <h5 class="card-title"><s style="color: darkgray;">₹{{product.price}}&nbsp;</s>₹{{product.new_price}}<P class="card-text" style="color:green ;"><small>up to {{product.discount}}% off</small></P></h5>
+    <div class="my-5 mx-3">
+        <div class="d-flex align-items-start">
+            <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <button class="nav-link active" id="v-pills-Filter-tab" data-bs-toggle="pill" data-bs-target="#v-pills-Filter" type="button" role="tab" aria-controls="v-pills-Filter" aria-selected="true">Filter</button> 
+                {% for pro in products %}
+                <button class="nav-link" id="v-pills-{{pro.1.id}}-tab" data-bs-toggle="pill" data-bs-target="#v-pills-{{pro.1.id}}" type="button" role="tab" aria-controls="v-pills-{{pro.1.id}}" aria-selected="false">{{pro.1.name}}</button> 
+                {% endfor %}
+                <!-- <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</button> -->
+                <!-- <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</button> -->
+            </div>
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-Filter" role="tabpanel" aria-labelledby="v-pills-Filter-tab">
+                    <div class="row row-cols-1 row-cols-md-4 g-4 m-3">
+                        <!-- Adding Jinja Template -->
+                        {% for product in all_product %} {% if product.total_num != 0 %}
+                        <div class="col" style="max-width:350px; min-width:250px">
+                            <a href="/product/{{product.id}}">
+                                <div class="card h-100">
+                                    <img src="/media/{{product.thumbnail_image}}" class="card-img-top" style="height: 300px;" alt="product">
+                                    <div class="card-body">
+                                        <h4 class="card-title"><b>{{product.name|title}}</b></h4>
+                                        <p class="card-text" style="color: gray;">{{product.design_pattern|slice:50}}</p>
+                                        <h5 class="card-title"><s style="color: darkgray;">₹{{product.price}}&nbsp;</s>₹{{product.new_price}}
+                                            <P class="card-text" style="color:green ;"><small>up to {{product.discount}}% off</small></P>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        {% endif %} {% endfor %}
                     </div>
                 </div>
-            </a>
+                {% for pro in products %}
+                <div class="tab-pane fade" id="v-pills-{{pro.1.id}}" role="tabpanel" aria-labelledby="v-pills-{{pro.1.id}}-tab">
+                    <div class="row">
+                    {% for product in pro|slice:":1" %} {% for p in product %}
+                    <div class="col" style="max-width:350px; min-width:275px">
+                        <a href="/product/{{p.id}}">
+                            <div class="card h-100">
+                                <img src="/media/{{p.thumbnail_image}}" class="card-img-top" style="height: 300px;" alt="product">
+                                <div class="card-body">
+                                    <h4 class="card-title"><b>{{p.name}}</b></h4>
+                                    <p class="card-text" style="color: gray;">{{p.design_pattern|slice:50|title}}</p>
+                                    <h5 class="card-title"><s style="color: darkgray;">₹{{p.price}}&nbsp;</s>₹{{p.new_price}}
+                                        <P class="card-text" style="color:green ;"><small>up to {{p.discount}}% off</small></P>
+                                    </h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %} {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
         </div>
-        {% endif %}
-        {% endfor %}
     </div>
+
 </section>
 {% endblock main_body %}

@@ -26,7 +26,22 @@
             $(".alert").fadeTo(500, 0).slideUp(500, function() {
                 $(this).hide();
             });
-        }, 2000);
+        }, 3000);
+
+        function myFunction() {
+            /* Get the text field */
+            var copyText = document.getElementById("myInput");
+
+            /* Select the text field */
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+            /* Copy the text inside the text field */
+            navigator.clipboard.writeText(copyText.value);
+
+            /* Alert the copied text */
+            alert("Copied the text: " + copyText.value);
+        }
     </script>
 </head>
 
@@ -46,7 +61,10 @@
                         <a class="nav-link {% block active %} {% endblock active %}" aria-current="page" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% block active1 %} {% endblock active1 %}" href="About" >About</a>
+                        <a class="nav-link {% block active4 %} {% endblock active4 %}" aria-current="page" href="/all_product">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% block active1 %} {% endblock active1 %}" href="About">About</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% block active2 %} {% endblock active2 %}" href="contact">Contact</a>
@@ -68,6 +86,7 @@
                                 <li><a class="dropdown-item" href="/wishlist">Wishlist</a></li>
                                 <li><a class="dropdown-item" href="/cart">Cart</a></li>
                                 <li><a class="dropdown-item" href="/your_order">Your Order</a></li>
+                                <li><a class="dropdown-item" href="/bonus">My Bonus</a></li>
 
                                 <li>
                                     <hr class="dropdown-divider">
@@ -92,7 +111,7 @@
                             </a>
                         </li>
                         <!-- Logged In -->
-                        
+
                         {% else %}
                         <li class="nav-item">
                             <a href="login" class="nav-link active">
@@ -119,7 +138,7 @@
                         <h5>Company Info</h5>
                         <a href="#"> About Us</a>
                         <a href="#"> Affiliate</a>
-                        <a href="#"> Fasions</a>
+                        <a href="#"> Fashion</a>
                     </div>
                     <div class="col-sm-3">
                         <h5>Help & Support</h5>

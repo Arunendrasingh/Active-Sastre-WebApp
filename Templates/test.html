@@ -1,150 +1,24 @@
-def place_order(request):
-    if request.method == "POST":
-        cart_id = request.POST["cart_id"]
-        address = request.POST["address"]
-        size = request.POST["size"]
-        value = size.split()
-        prod_id = request.POST["prod_id"]
-        prod_name = request.POST["prod_name"]
-        prod_price = request.POST["prod_price"]
-        total_product = request.POST["product_num"]
-        total_price = request.POST["total_price"]
-        user_name = request.POST["user_name"]
-        user = request.user.first_name + "  " + request.user.last_name
-        if value[1] == "female":
-            size_obj = Femail_size_Chart.objects.filter(id=int(value[0]))[0]
-            size_name = size_obj.name
-            size_detail = (
-                "Shoulder:-"
-                + str(size_obj.shoulder)
-                + ", Shoulder Full Lenght:-"
-                + str(size_obj.shoulder_full_lenght)
-                + ", Front Neck Depth:-"
-                + str(size_obj.front_neck_depth)
-                + ", Back Neck Depth:-"
-                + str(size_obj.back_neck_depth)
-                + ", Sleeve Length:-"
-                + str(size_obj.sleeve_length)
-                + ", Sleeve Around:-"
-                + str(size_obj.sleev_around)
-                + ", Armhole(around):-"
-                + str(size_obj.arm_hole)
-                + ", Dress Length:-"
-                + str(size_obj.gown_length)
-                + ", Neck Line:-"
-                + str(size_obj.neck_line)
-                + ", Upper Bust:-"
-                + str(size_obj.upper_bust)
-                + ", Chest/Bust:-"
-                + str(size_obj.chest)
-                + ", Stomach:-"
-                + str(size_obj.stomach)
-                + ", Hip:-"
-                + str(size_obj.hips)
-                + ", Thigh:-"
-                + str(size_obj.thigh)
-                + ", Chest Around:-"
-                + str(size_obj.chest)
-                + ", Waist:-"
-                + str(size_obj.waist)
-                + ", Blouse Length:-"
-                + str(size_obj.blouse_length)
-                + ", Knee:-"
-                + str(size_obj.knee)
-                + ", Calf:-"
-                + str(size_obj.calf)
-                + ", Ankel Hem:-"
-                + str(size_obj.arm_hole)
-                + ", Upper Chest:-"
-                + str(size_obj.chest)
-                + ", Neck to Solider:-"
-                + str(size_obj.neck_to_solider)
-                + ", Gown Length:-"
-                + str(size_obj.gown_length)
-                + ", Around Bust:-"
-                + str(size_obj.around_bust)
-                + ", upper_waist:-"
-                + str(size_obj.upper_waist)
-                + ", Waist to Ankel Length:-"
-                + str(size_obj.waist_to_ankel_length)
-                + ", Full Body Lenght:-"
-                + str(size_obj.full_body_lenght)
-            )
-        else:
-            size_obj = male_pantshirt.objects.filter(id=int(value[0]))[0]
-            size_name = size_obj.name
-            size_detail = (
-                "Paint Length:-"
-                + str(size_obj.p_length)
-                + ", Paint Waist:-"
-                + str(size_obj.p_Waist)
-                + ", Paint Hips:-"
-                + str(size_obj.p_Hips)
-                + ", Paint Thigh:-"
-                + str(size_obj.p_Thigh)
-                + ", Knee:-"
-                + str(size_obj.p_Knee)
-                + ", Leg Opening:-"
-                + str(size_obj.p_Leg_Opening)
-                + ", Crotch/Rise:-"
-                + str(size_obj.p_Crotch_Or_Rise)
-                + ", In-Seam:-"
-                + str(size_obj.p_In_Seam)
-                + ", Shirt Length:-"
-                + str(size_obj.s_Shirt_lenght)
-                + ", Sleeve Length:-"
-                + str(size_obj.s_Sleeve_Length)
-                + ", Shoulders:-"
-                + str(size_obj.s_Shoulders)
-                + ", Chest:-"
-                + str(size_obj.s_Chest)
-                + ", Overarm:-"
-                + str(size_obj.s_Overarm)
-                + ", Waistcoat Length:-"
-                + str(size_obj.s_Waistcoat_Length)
-                + ", Bicep(Loose):-"
-                + str(size_obj.s_Bicep_Loose)
-                + ", Chest:-"
-                + str(size_obj.s_Front_Chest)
-                + ", Stomach:-"
-                + str(size_obj.s_Front_Stomach)
-                + ", Front - Hip:-"
-                + str(size_obj.s_Front_Hips)
-                + ", Wrist:-"
-                + str(size_obj.s_Wrist)
-                + ", Neck:-"
-                + str(size_obj.s_Neck)
-            )
+To -do (10-08-2021)
+1:- When user buy a product 
+ 1.a - then check user is applied any referral_id of any user's or not 
+ 1.b - if yes then check if he used his total num of offer or not if not: then
+ 1.c - if not used total then :
+ 1.d - if first-time product is buyed the : add 10% bonous on bonus account in whoes user who share the referral is and status is pending :
+ 1.e - when product is delivered then add to it with Total Product
 
-        obj_order = Oreder_Detail(
-            user_id=request.user.id,
-            user_name=user_name,
-            address=address,
-            Product_Id=prod_id,
-            pro_name=prod_name,
-            Product_quantity=total_product,
-            Pro_price=prod_price,
-            size_id=int(value[0]),
-            size_name=size_name,
-            size_detail=size_detail,
-            total_price=total_price,
-            order_status="pending",
-        )
-        obj_order.save()
-        if obj_order.save:
-            # mail for order detail to user
-            subject = "Regarting to Product Order On Active Sastre"
-            message = f"Dear  \"{user}\" Your Order For Product '{prod_name}' has been placed successfully."
-            email_from = settings.EMAIL_HOST_USER
-            recipient_list = (request.user.email,)
-            send_mail(subject, message, email_from, recipient_list)
-            # end mail
-            cart_obj = MyCart.objects.filter(id=cart_id)[0]
-            cart_obj.delete()
-        messages.info(
-            request,
-            "Your Order For Product" + prod_name + "has been placed successfully!",
-        )
-        return redirect("/cart")
-    else:
-        return redirect("/cart")
+
+
+
+ Models For Bonous Account:
+
+ NAme:- User_Bonus:
+
+    1:- user_id = user_id
+    2:- total = total bonus of which  product is delivered
+    3:- product_id = on which product bonous is given
+    4:-status = delivered or not
+    : if status is delivered then bonus is add to total else status is pending then this is add to total when product is delivered
+    5:-user_who_buy_Product =  
+    6:-date of product_delivery - 
+    7:-and also date of bonus add on total bonos account
+    8:- bonus referred by : Who Is buying Product and his status

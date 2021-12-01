@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
@@ -8,40 +7,29 @@ from .tokens import account_activation_token
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 
-
-from typing import OrderedDict
-from django.http.response import HttpResponseRedirect
-
-# from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 
-# from django.http import request
 from django.contrib import messages
 from django.conf import settings
 from django.core.mail import send_mail
 from django.contrib.auth.models import User, auth
 from django.contrib.auth.decorators import login_required
-from main_app.models import (
-    Address,
-    Femail_size_Chart,
-    Oreder_Detail,
-    Product_detail,
-    Profile,
-    male_pantshirt,
-    Product_Img,
-    MyCart,
-    Wishlist,
-    blouse,
-    for_gown,
-    for_lahenga,
-    kurti,
-    size_detail,
-    user_feedback,
-)
+from main_app.models import *
 from django.contrib.auth.backends import ModelBackend, UserModel
 from django.db.models import Q
 
+# for password reset in django
 
+from django.shortcuts import render, redirect
+from django.core.mail import send_mail, BadHeaderError
+from django.http import HttpResponse
+from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.models import User
+from django.template.loader import render_to_string
+from django.db.models.query_utils import Q
+from django.utils.http import urlsafe_base64_encode
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_bytes
 # Create your views here.
 
 
@@ -67,22 +55,35 @@ class EmailBackend(ModelBackend):
 
 
 def index(request):
-    get_product = Product_detail.objects.all()
-    for product in get_product:
-        productprice = int(product.price)
-        total_price = productprice - (int(productprice) * int(product.discount)) / 100
-        # actual_price.append(productprice - total_price)
-        product.new_price = total_price
-        product.save()
+    get_category = category.objects.all()
+    products = []
+    for product in get_category:
+        if Product_detail.objects.filter(category=product).exists():
+                all_Product = Product_detail.objects.filter(category=product)
+                products.append([all_Product, product])
+
     All_detail = {
-        "product": get_product,
+        "categorys": get_category,
+        "products": products
     }
     return render(request, "index.html", All_detail)
 
 
 def all_product(request):
+    get_category = category.objects.all()
+    products = []
+    for product in get_category:
+        if Product_detail.objects.filter(category=product).exists():
+                all_Product = Product_detail.objects.filter(category=product)
+                products.append([all_Product, product])
+
     get_product = Product_detail.objects.all()[::-1]
-    return render(request, "all_product.html", {"all_product": get_product})
+    All_detail = {
+        "categorys": get_category,
+        "all_product": get_product,
+        "products": products
+    }
+    return render(request, "all_product.html", All_detail)
 
 
 def about(request):
@@ -95,7 +96,7 @@ def checkout(request, p_id):
     address_obj = Address.objects.filter(user=user_obj.id)
     product_obj = Product_detail.objects.filter(id=p_id)[0]
     get_size = size_detail.objects.filter(user=request.user)
-    cart_obj = MyCart.objects.filter(product_id=p_id)[0]
+    cart_obj = MyCart.objects.filter(user_id = request.user.id, product_id=p_id)[0]
     main_info = {
         "address": address_obj,
         "product_obj": product_obj,
@@ -119,6 +120,8 @@ def place_order(request):
         total_price = request.POST["total_price"]
         user_name = request.POST["user_name"]
         user = request.user.first_name + "  " + request.user.last_name
+
+        # Store About Product Order
         size_obj = size_detail.objects.filter(id=value[0])[0]
         if value[1] == "female":
             if size_obj.design_type == "blouse":
@@ -173,13 +176,13 @@ def place_order(request):
                     + str(design_det.waist)
                     + "Lower Side"
                     + ", Thigh:-"
-                    + str(design_det.back_neck_depth)
+                    + str(design_det.thigh)
                     + ", Knee:-"
-                    + str(design_det.blouse_length)
+                    + str(design_det.knee)
                     + ", Calf:-"
-                    + str(design_det.sleeve_length)
+                    + str(design_det.calf)
                     + ", Ankel Hem:-"
-                    + str(design_det.sleeve_around)
+                    + str(design_det.ankel_hem)
                 )
             elif size_obj.design_type == "lahenga":
                 design_det = for_lahenga.objects.filter(size_detail=size_obj)[0]
@@ -303,7 +306,41 @@ def place_order(request):
             order_status="pending",
         )
         obj_order.save()
+        # orderObj = Oreder_Detail.objects.get(id = obj_order.id)
+        # print(orderObj.id)
+    
+
         if obj_order.save:
+            # Check User is Applid any referral id or not
+            get_referral = Referral.objects.get(user_id = request.user.id)
+            if get_referral.share_by != None:
+                if get_referral.is_used == False:
+                    # Fuction for save Bonus
+                    def bons(obj1, totalprice, userid, productdetil, bonusproduct, bonus_rfferto, totalorder, orderObj):
+                        bonus = (float(totalprice)*bonusproduct)/100
+                        obj1.objects.update_or_create(user_id = userid,order_detail = orderObj ,product_detail = productdetil, bonus_on_product = bonusproduct, bonus_referr_to = bonus_rfferto, total_order = totalorder, bonus_price = bonus)
+                        # get_referral.total_bonus = bonus
+                        used_time = get_referral.used_time +1
+                        get_referral.used_time = used_time
+                        get_referral.save()
+                        obj_order.refral_status = True
+                        obj_order.save()
+
+                    
+                    if get_referral.used_time < 1:
+                        bons(Bonus, total_price, request.user.id, prod_id, 10, get_referral.share_by, total_price, obj_order.id)
+                    elif get_referral.used_time < 2:
+                        bons(Bonus, total_price, request.user.id, prod_id, 6, get_referral.share_by, total_price, obj_order.id)
+                    elif get_referral.used_time < 3:
+                        bons(Bonus, total_price, request.user.id, prod_id, 5, get_referral.share_by, total_price, obj_order.id)
+                    elif get_referral.used_time < 4:
+                        bons(Bonus, total_price, request.user.id, prod_id, 3, get_referral.share_by, total_price, obj_order.id)
+                        get_referral.is_used = True
+                        get_referral.save()
+                    else:
+                        get_referral.is_used = True
+                        get_referral.save()
+
             # mail for order detail to user
             subject = "Regarting to Product Order On Active Sastre"
             message = f"Dear  \"{user}\" Your Order For Product '{prod_name}' has been placed successfully."
@@ -311,7 +348,7 @@ def place_order(request):
             recipient_list = (request.user.email,)
             send_mail(subject, message, email_from, recipient_list)
             # end mail
-            cart_obj = MyCart.objects.filter(id=cart_id)[0]
+            cart_obj = MyCart.objects.filter(user_id = request.user.id,id=cart_id)[0]
             cart_obj.delete()
         messages.info(
             request,
@@ -486,6 +523,8 @@ def activate(request, uidb64, token):
             # return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
         else:
             return HttpResponse('Activation link is invalid!')
+
+
 class user_profile:
 
     def signup(request):
@@ -515,41 +554,57 @@ class user_profile:
                         password=user_password2,
                     )
                     user.save()
+                    # Save User Profile
                     user_profile = Profile.objects.get(user=user)
                     user_profile.phone = phone
                     user_profile.save()
+                    # Find Referral Id
+                    refferal_id = user_email.split('@', 1)
+                    # Save Referral Id
+                    user_referral = Referral.objects.get(user=user)
+                    user_referral.your_referral_id = refferal_id[0]
+                    user_referral.save()
+                    if request.GET.get('referral', False):
+                        referral = Referral.objects.get(user = user)
+                        if referral.is_applied == False:    
+                            shared_by = Referral.objects.get(your_referral_id = request.GET["referral"])
+                            # user_referral = Referral.objects.update_or_create(referral_id = request.GET["referral"], is_applied = True, share_by = shared_by.user_id, defaults={'user': user})
+                            user_referral.referral_id = request.GET["referral"]
+                            user_referral.is_applied = True
+                            user_referral.share_by = shared_by.user_id
+                            # user_referral.your_referral_id = request.GET["referral"]
+                            user_referral.save()
+                        else:
+                            print("False-already_applied")
+                    else:
+                        print(request.GET['referral'])
+                        print("false-referral")
 
                     """Code for sending verification link to user"""
                     current_site = get_current_site(request)
                     mail_subject = 'Activate your blog account.'
                     message = render_to_string('acc_active_email.html', {
                         'user': user,
+                        'UserEmail':user.first_name + " " + user.last_name,
                         'domain': current_site.domain,
                         'uid':urlsafe_base64_encode(force_bytes(user.pk)),
                         'token':account_activation_token.make_token(user),
                     })
                     to_email = user_email
                     email = EmailMessage(
-                                mail_subject, message, to=[to_email]
+                                mail_subject, message, settings.EMAIL_HOST_USER ,to=[to_email]
                     )
                     email.send()
-                    return HttpResponse('Please confirm your email address to complete the registration')
-                    # subject = "welcome to Active Sastre"
-                    # message = (
-                    #     f"Hi {first_name}, thank you for registering in Active Sastre."
-                    # )
-                    # email_from = settings.EMAIL_HOST_USER
-                    # recipient_list = [
-                    #     user_email,
-                    # ]
-                    # send_mail(subject, message, email_from, recipient_list)
-                    messages.success(request, "Yor are registerd successfully")
+                    messages.info(request, "Please confirm your email address to complete the registration")
                     return redirect("/login")
             else:
                 messages.warning(request, "Password is not matching")
                 return redirect("/signup")
         else:
-            return render(request, "signup.html")
+            if request.GET.get('referral', False):
+                return render(request, "signup.html", {"ref":request.GET['referral']})
+            else:
+                return render(request, "signup.html")
 
     @login_required(login_url="/login")
     def change_profile(request, id):
@@ -557,7 +612,6 @@ class user_profile:
             fname = request.POST["fname"]
             lname = request.POST["lname"]
             user_pro = User.objects.get(id=id)
-            # get_profile = Profile.objects.get(user=user_pro)
             user_pro.first_name = fname
             user_pro.last_name = lname
             user_pro.save()
@@ -908,7 +962,7 @@ class size:
                     kurti_size.stomach = request.POST["stomach"]
                     kurti_size.hip = request.POST["p_Hips"]
                     kurti_size.shoulder = request.POST["shoulder"]
-                    kurti_size.arm_hole = request.POST["armhole"]
+                    kurti_size.arm_hole = request.POST["arm_hole"]
                     kurti_size.waist = request.POST["waist"]
                     kurti_size.thigh = request.POST["thigh"]
                     kurti_size.knee = request.POST["p_Knee"]
@@ -930,17 +984,17 @@ class size:
                         0
                     ]
                     # size_detail=obj_size,
-                    gown_data.gown_length = (request.POST["gown_length"],)
-                    gown_data.upper_chest = (request.POST["upper_Chest"],)
-                    gown_data.chest = (request.POST["s_Chest"],)
-                    gown_data.waist = (request.POST["waist"],)
-                    gown_data.stomach = (request.POST["stomach"],)
-                    gown_data.hips = (request.POST["p_Hips"],)
-                    gown_data.shoulder = (request.POST["shoulder"],)
-                    gown_data.front_neck_depth = (request.POST["front_neck_depth"],)
-                    gown_data.sleeve_length = (request.POST["sleeve_length"],)
-                    gown_data.sleeve_round = (request.POST["sleeve_around"],)
-                    gown_data.arm_hole = (request.POST["arm_hole"],)
+                    gown_data.gown_length = request.POST["gown_length"]
+                    gown_data.upper_chest = request.POST["upper_Chest"]
+                    gown_data.chest = request.POST["s_Chest"]
+                    gown_data.waist = request.POST["waist"]
+                    gown_data.stomach = request.POST["stomach"]
+                    gown_data.hips = request.POST["p_Hips"]
+                    gown_data.shoulder = request.POST["shoulder"]
+                    gown_data.front_neck_depth = request.POST["front_neck_depth"]
+                    gown_data.sleeve_length = request.POST["sleeve_length"]
+                    gown_data.sleeve_round = request.POST["sleeve_around"]
+                    gown_data.arm_hole = request.POST["arm_hole"]
                     gown_data.save()
                     messages.info(
                         request, "Female Size for Gown is added Successfully!"
@@ -957,21 +1011,19 @@ class size:
                         id=s_ge, size_detail=obj_size1
                     )[0]
                     # size_detail=obj_size,
-                    lahenga_data.front_neck_depth = (request.POST["front_neck_depth"],)
-                    lahenga_data.around_bust = (request.POST["around_bust"],)
-                    lahenga_data.neck_to_shoulder = (request.POST["neck_to_solider"],)
-                    lahenga_data.upper_waist = (request.POST["upper_waist"],)
-                    lahenga_data.blouse_length = (request.POST["blouse_length"],)
-                    lahenga_data.shoulder = (request.POST["shoulder"],)
-                    lahenga_data.back_neck_depth = (request.POST["back_neck_depth"],)
-                    lahenga_data.around_armholes = (request.POST["arm_hole"],)
-                    lahenga_data.sleeve_length = (request.POST["sleeve_length"],)
-                    lahenga_data.waist = (request.POST["waist"],)
-                    lahenga_data.hips = (request.POST["p_Hips"],)
-                    lahenga_data.waist_to_ankel = (
-                        request.POST["waist_to_ankel_length"],
-                    )
-                    lahenga_data.full_body = (request.POST["full_body_lenght"],)
+                    lahenga_data.front_neck_depth = request.POST["front_neck_depth"]
+                    lahenga_data.around_bust = request.POST["around_bust"]
+                    lahenga_data.neck_to_shoulder = request.POST["neck_to_solider"]
+                    lahenga_data.upper_waist = request.POST["upper_waist"]
+                    lahenga_data.blouse_length = request.POST["blouse_length"]
+                    lahenga_data.shoulder = request.POST["shoulder"]
+                    lahenga_data.back_neck_depth = request.POST["back_neck_depth"]
+                    lahenga_data.around_armholes = request.POST["arm_hole"]
+                    lahenga_data.sleeve_length = request.POST["sleeve_length"]
+                    lahenga_data.waist = request.POST["waist"]
+                    lahenga_data.hips = request.POST["p_Hips"]
+                    lahenga_data.waist_to_ankel = request.POST["waist_to_ankel_length"]
+                    lahenga_data.full_body = request.POST["full_body_lenght"]
                     lahenga_data.save()
                     messages.info(
                         request, "Female Size for Lahenga is added Successfully!"
@@ -989,26 +1041,26 @@ class size:
                         id=s_ge, size_detail=obj_size1
                     )[0]
                     # size_detail=obj_size,
-                    size_obj_mail.p_length = (request.POST["p_Length"],)
-                    size_obj_mail.p_Waist = (request.POST["p_Waist"],)
-                    size_obj_mail.p_Hips = (request.POST["p_Hips"],)
-                    size_obj_mail.p_Thigh = (request.POST["p_Thigh"],)
-                    size_obj_mail.p_Knee = (request.POST["p_Knee"],)
-                    size_obj_mail.p_Leg_Opening = (request.POST["p_LegOpening"],)
-                    size_obj_mail.p_Crotch_Or_Rise = (request.POST["p_Crotch"],)
-                    size_obj_mail.p_In_Seam = (request.POST["p_Seam"],)
-                    size_obj_mail.s_Shirt_lenght = (request.POST["s_ShirtLen"],)
-                    size_obj_mail.s_Sleeve_Length = (request.POST["s_Sleeve"],)
-                    size_obj_mails_Shoulders = (request.POST["s_Shoulders"],)
-                    size_obj_mail.s_Chest = (request.POST["s_Chest"],)
-                    size_obj_mail.s_Overarm = (request.POST["s_Overarm"],)
-                    size_obj_mail.s_Waistcoat_Length = (request.POST["Waistcoat"],)
-                    size_obj_mail.s_Bicep_Loose = (request.POST["s_Bicep"],)
-                    size_obj_mail.s_Front_Chest = (request.POST["s_FrontChest"],)
-                    size_obj_mail.s_Front_Stomach = (request.POST["s_Stomach"],)
-                    size_obj_mail.s_Front_Hips = (request.POST["s_Hips"],)
-                    size_obj_mail.s_Wrist = (request.POST["s_Wrist"],)
-                    size_obj_mail.s_Neck = (request.POST["s_Neck"],)
+                    size_obj_mail.p_length = request.POST["p_Length"]
+                    size_obj_mail.p_Waist = request.POST["p_Waist"]
+                    size_obj_mail.p_Hips = request.POST["p_Hips"]
+                    size_obj_mail.p_Thigh = request.POST["p_Thigh"]
+                    size_obj_mail.p_Knee = request.POST["p_Knee"]
+                    size_obj_mail.p_Leg_Opening = request.POST["p_LegOpening"]
+                    size_obj_mail.p_Crotch_Or_Rise = request.POST["p_Crotch"]
+                    size_obj_mail.p_In_Seam = request.POST["p_Seam"]
+                    size_obj_mail.s_Shirt_lenght = request.POST["s_ShirtLen"]
+                    size_obj_mail.s_Sleeve_Length = request.POST["s_Sleeve"]
+                    size_obj_mails_Shoulders = request.POST["s_Shoulders"]
+                    size_obj_mail.s_Chest = request.POST["s_Chest"]
+                    size_obj_mail.s_Overarm = request.POST["s_Overarm"]
+                    size_obj_mail.s_Waistcoat_Length = request.POST["Waistcoat"]
+                    size_obj_mail.s_Bicep_Loose = request.POST["s_Bicep"]
+                    size_obj_mail.s_Front_Chest = request.POST["s_FrontChest"]
+                    size_obj_mail.s_Front_Stomach = request.POST["s_Stomach"]
+                    size_obj_mail.s_Front_Hips = request.POST["s_Hips"]
+                    size_obj_mail.s_Wrist = request.POST["s_Wrist"]
+                    size_obj_mail.s_Neck = request.POST["s_Neck"]
                     size_obj_mail.save()
                     messages.info(request, "Male Size is added Successfully!")
                     return redirect("/profile")
@@ -1095,50 +1147,65 @@ def change_password(request, u_id):
             messages.info(request, "Invalid Old Password!")
             return redirect("/profile")
 
+def password_reset_request(request):
+	if request.method == "POST":
+		password_reset_form = PasswordResetForm(request.POST)
+		if password_reset_form.is_valid():
+			data = password_reset_form.cleaned_data['email']
+			associated_users = User.objects.filter(Q(email=data))
+			if associated_users.exists():
+				for user in associated_users:
+					subject = "Password Reset Requested"
+					email_template_name = "password/password_reset_email.txt"
+					c = {
+					"email":user.email,
+                    'username':user.first_name +" "+ user.last_name,
+					'domain':'127.0.0.1:8000',
+					'site_name': 'Website',
+					"uid": urlsafe_base64_encode(force_bytes(user.pk)),
+					"user": user,
+					'token': default_token_generator.make_token(user),
+					'protocol': 'http',
+					}
+					email = render_to_string(email_template_name, c)
+					try:
+						send_mail(subject, email, settings.EMAIL_HOST_USER , [user.email], fail_silently=False)
+					except BadHeaderError:
+						return HttpResponse('Invalid header found.')
+					return redirect ("/password_reset/done/")
+	password_reset_form = PasswordResetForm()
+	return render(request=request, template_name="password/password_reset.html", context={"password_reset_form":password_reset_form})
 
-def reset_password(request):
-    return render(request, "password/password_reset.html")
+@login_required(login_url="/login")
+def your_bonus(request):
+    get_user = User.objects.filter(id=request.user.id)[0]
+    referral = get_user.email.split('@', 1)
+    # Fetch Status of Product
+    order_obj = Oreder_Detail.objects.filter(user_id=request.user.id)
+    for order in order_obj:
+        if order.order_status and order.refral_status:
+            # Find Bonus id with this id
+            objBOnus = Bonus.objects.get(order_detail = order.id)
+            objBOnus.delivery_status = True
+            objBOnus.save()
+    # Acessing Bonus Objects
+    bonusObj = Bonus.objects.filter(user_id = request.user.id)
+    for bonus in bonusObj:
+        if bonus.is_added == False and bonus.delivery_status == True:
+            bonus.total_bonus += bonus.bonus_price
+            bonus.is_added = True
+            bonus.save()
+            # Find Who &
+            # Find EmailWith That user id
+            userObj = User.objects.get(id = bonus.bonus_referr_to)
+            referalObj = Referral.objects.get(user_id = userObj.id)
+            referalObj.total_active_coin += bonus.bonus_price 
+            referalObj.save()
 
+    referObj1 = Referral.objects.get(user = get_user)
+    send_detail = {
+        'referral': referral[0],
+        'totalcoin':referObj1.total_active_coin,
+    }
 
-def password_reset_confirm(request):
-    if request.method == "POST":
-        user_email = request.POST["email"]
-        phone = request.POST["phone"]
-        if User.objects.filter(
-            Q(username__iexact=user_email) | Q(email__iexact=user_email)
-        ).exists():
-            user_data = User.objects.filter(
-                Q(username__iexact=user_email) | Q(email__iexact=user_email)
-            )[0]
-            if Profile.objects.filter(user=user_data, phone=phone).exists():
-                user_data = User.objects.filter(
-                    Q(username__iexact=user_email) | Q(email__iexact=user_email)
-                )[0]
-                return redirect("/password_reset_done/" + str(user_data.id))
-            else:
-                messages.info(request, "Phone is not exists")
-                return redirect("/reset_password")
-        else:
-            messages.info(request, "Username Or Email is not exists")
-            return redirect("/reset_password")
-
-
-def password_reset_done(request, u_id):
-    if request.method == "POST":
-        user_obj = User.objects.filter(id=u_id)[0]
-        if request.POST["newpassword"] == request.POST["conpassword"]:
-            user_obj.set_password(request.POST["newpassword"])
-            user_obj.save()
-            messages.info(request, "Password is changed successfully!")
-            return redirect("/profile")
-        else:
-            messages.info(request, "Both password is not Matched")
-            return redirect("/profile")
-    else:
-        if User.objects.filter(id=u_id).exists():
-            user_obj = User.objects.filter(id=u_id)[0]
-            return render(
-                request, "password/password_reset_done.html", {"user": user_obj}
-            )
-        else:
-            return redirect("/login")
+    return render(request, "bonus.html", send_detail)

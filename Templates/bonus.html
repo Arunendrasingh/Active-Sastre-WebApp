@@ -1,0 +1,66 @@
+{% extends "base.html" %} {% load static %} {% block title %}Active Sastre-My Bonus {% endblock title %} {% block main_body %}
+<section>
+    <div class="header">
+        <h1> My Bonus</h1>
+    </div>
+    <div class="container" id="referral">
+        <div class="row">
+            <div class="col-3">
+                <h3 style="color: white; ">Your Referral id:-</h3>
+            </div>
+            <div class="col">
+                <input readonly="readonly" type="text" value="https://arunendra.pythonanywhere.com/signup?referral={{referral}}" id="myInput">
+                <div class="row">
+                    <button class="col" onclick="myFunction()">Copy Your Referral ID</button>
+                    <a class="col" href="whatsapp://send?text=https://arunendra.pythonanywhere.com/signup?referral={{referral}}" data-action="share/whatsapp/share" target="_blank"> Share to
+            WhatsApp </a>
+                </div>
+            </div>
+        </div>
+        <hr style="height: 9px;">
+        <div class="row">
+            <div class="col">
+                <h2 style="color: white;">Active Coins:-</h2>
+            </div>
+            <div class="col">
+                <input readonly="readonly" type="text" value="{{totalcoin}}" id="myInput">
+            </div>
+            <div class="container" style="margin-block-end: 20px;">
+                {% for detial in productDetail %}
+                <div class="card">
+                    <div class="card-header">
+                        Featured
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"> <strong>Product name:</strong> {{detial.productdetail.name}}</h5>
+                        <h5 class="card-title">Total discount:-{{detial.bonusObj.bonus_on_product}}%</h5>
+                        <h5 class="card-title">Total Order{{detial.bonusObj.total_order}}</h5>
+                        <h5 class="card-title">Total Bonus{{detial.bonusObj.total_bonus}}</h5>
+                        <h5 class="card-title">status of product:
+                            {% if detial.bonusObj.delivery_status %}
+                            Delivered
+                            {% else %}
+                            Pending
+                            {% endif %}
+                        </h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                        <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                    </div>
+                </div>
+                <hr>
+                {% endfor %}
+                <!-- <div class="card">
+                    <div class="card-header">
+                        Featured
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Special title treatment</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a> --
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock main_body %}

@@ -100,10 +100,10 @@
                     <div class="col">
                         <a href="/product/{{product.id}}">
                             <div class="card h-100">
-                                <img src="/media/{{product.thumbnail_image}}" class="card-img-top" alt="product">
+                                <img src="/media/{{product.thumbnail_image}}" class="card-img-top" style="height: 300px;" alt="product">
                                 <div class="card-body">
                                     <h4 class="card-title"><b>{{product.name}}</b></h4>
-                                    <p class="card-text" style="color: gray;">{{product.design_pattern}}</p>
+                                    <p class="card-text" style="color: gray;">{{product.design_pattern|slice:50}}</p>
                                     <h5 class="card-title"><s style="color: darkgray;">₹{{product.price}}&nbsp;</s>₹{{product.new_price}}<P class="card-text" style="color:green ;"><small>up to {{product.discount}}% off</small></P></h5>
                                 </div>
                             </div>
@@ -112,7 +112,7 @@
                     {% endif %}
                     {% endfor %}
                 </div>
-                <button>View All</button>
+                <a href="/all_product"><button> View All</button></a>
             </div>
         </div>
     </div>

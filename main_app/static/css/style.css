@@ -7,6 +7,64 @@ body {
     background: #EEEEEE;
 }
 
+#referral{
+    margin: 20px 10px 10px 10px;
+    background-color: rgb(47 79 79);
+    height: 100%;
+    margin-inline: auto;
+    
+}
+
+#referral input{
+    text-align: center;
+    display: block;
+    width: 80%;
+    margin: 15px auto;
+    margin: 15px auto;
+    background: transparent;
+    border: 0px solid transparent;
+    border-bottom: 1px solid #ddd;
+    border-radius: 0;
+    padding: 5px 15px;
+    outline: none;
+    color: white;
+    font-size: 16px;
+}
+
+#referral a{
+    margin: 15px 10px 0px 55px;
+    display: block;
+    padding: 5px 20px;
+    border: 2px solid rgb(0, 135, 245);
+    background: whitesmoke;
+    transition: .4s;
+    border-radius: 20px;
+}
+#referral button {
+    margin: 15px 10px 0px 55px;
+    display: block;
+    padding: 5px 20px;
+    border-radius: 20px;
+    border: 2px solid rgb(0, 135, 245);
+    background: whitesmoke;
+    transition: .4s;
+}
+
+#referral a:hover {
+    background: rgb(0, 135, 245);
+    color: white;
+    border: 2px solid rgb(0, 135, 245);
+}
+#referral button:hover {
+    background: rgb(0, 135, 245);
+    color: white;
+    border: 2px solid rgb(0, 135, 245);
+}
+
+#referral button:hover{
+    border: 1px solid rgb(0, 135, 245);
+}
+
 a {
     text-decoration: none;
     color: black;

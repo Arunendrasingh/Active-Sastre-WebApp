@@ -3,12 +3,15 @@ from django.db import models
 from django.utils.html import mark_safe
 from main_app.models import (
     Address,
+    Bonus,
     Oreder_Detail,
     Product_detail,
     Product_Img,
     Design_Img,
     Design,
     Profile,
+    Referral,
+    category,
     size_detail,
     user_feedback,
 )
@@ -171,4 +174,7 @@ class UserFeedbackAdmin(admin.ModelAdmin):
 
 
 admin.site.register(size_detail)
-# admin.site.register(Address)
+admin.site.register(Profile)
+admin.site.register(category)
+admin.site.register(Referral)
+admin.site.register(Bonus)

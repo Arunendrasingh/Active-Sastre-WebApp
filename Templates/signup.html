@@ -15,7 +15,7 @@
                 <h4 class="fs-2">Create New Account</h4>
                 <hr>
                 <h6 class="fs-5 my-3">Please provide all required details to register</h6>
-                <form action="/signup" method="POST">
+                <form action="/signup?referral={{ref}}" method="POST">
                     {% csrf_token %}
                     <input type="text" id="Fname" name="fname" placeholder="First Name">
                     <input type="text" id="lname" name="lname" placeholder="Last Name">
