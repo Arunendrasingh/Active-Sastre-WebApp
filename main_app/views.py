@@ -92,6 +92,7 @@ def about(request):
 
 @login_required(login_url="/login")
 def checkout(request, p_id):
+    print(request.user.id)
     user_obj = Profile.objects.get(id=request.user.id)
     address_obj = Address.objects.filter(user=user_obj.id)
     product_obj = Product_detail.objects.filter(id=p_id)[0]

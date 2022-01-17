@@ -104,7 +104,7 @@ class Design_Img(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone = models.CharField((u"Contact No"), max_length=30, blank=True)
-    image = models.ImageField(upload_to="Profile_Img")
+    # image = models.ImageField(upload_to="Profile_Img")
     date_time = models.DateTimeField(auto_now_add=True, null=True)
 
     @receiver(post_save, sender=User)

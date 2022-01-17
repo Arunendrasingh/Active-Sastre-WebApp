@@ -25,7 +25,8 @@ SECRET_KEY = 'u2a&ox#qrrky#v*q-k@rzmi#ytvib1&fbcb^v8i7uhgwzub6_a'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['arunendra.pythonanywhere.com', 'www.arunendra.pythonanywhere.com']
+ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['arunendra.pythonanywhere.com', 'www.arunendra.pythonanywhere.com']
 
 
 # Application definition
@@ -54,6 +55,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'Active_Sastre.urls'
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
 TEMPLATES = [
     {
@@ -108,7 +110,7 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "aman.singh.20e6@gmail.com"
-EMAIL_HOST_PASSWORD = "aman@singh@1791999"
+EMAIL_HOST_PASSWORD = "Aman@30122000"
 
 
 # Internationalization
